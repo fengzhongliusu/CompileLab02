@@ -4,6 +4,7 @@
 	#include <assert.h>
 	#include "util.h"
 	#include "lex.yy.c"
+	MultiTree* root;
 %}
 
 %union {
@@ -33,36 +34,36 @@
 
 %%
 Program		:	ExtDefList	{
-		$$ = newMultiTree(NULL, "Program", 3, NULL, $1->lineno, 1, $1);
-		//assert($1->node_name != NULL);
-		assert($$->child[0] == $1);
-		walk_tree($$);}
+			$$ = newMultiTree(NULL, "Program", 3, NULL, $1->lineno, 1, $1);
+			//assert($1->node_name != NULL);
+			assert($$->child[0] == $1);
+			root = $$;}
 			;
 
 ExtDefList	:	/*empty*/	{
-		$$ = NULL;}
+			$$ = NULL;}
 			|	ExtDef ExtDefList	{
-		$$ = newMultiTree(NULL, "ExtDefList", 3, NULL, $1->lineno, 2, $1, $2);}
+			$$ = newMultiTree(NULL, "ExtDefList", 3, NULL, $1->lineno, 2, $1, $2);}
 			;
 
 ExtDef		:	Specifier ExtDecList SEMI {
-		$$ = newMultiTree(NULL, "ExtDef", 3, NULL, $1->lineno, 3, $1, $2, $3);}
+			$$ = newMultiTree(NULL, "ExtDef", 3, NULL, $1->lineno, 3, $1, $2, $3);}
 			|	Specifier SEMI {
-		$$ = newMultiTree(NULL, "ExtDef", 3, NULL, $1->lineno, 2, $1, $2);}
+			$$ = newMultiTree(NULL, "ExtDef", 3, NULL, $1->lineno, 2, $1, $2);}
 			|	Specifier FunDec CompSt	{
-		$$ = newMultiTree(NULL, "ExtDef", 3, NULL, $1->lineno, 3, $1, $2, $3);}
+			$$ = newMultiTree(NULL, "ExtDef", 3, NULL, $1->lineno, 3, $1, $2, $3);}
 			;
 
 ExtDecList	:	VarDec	{
-		$$ = newMultiTree(NULL, "ExtDecList", 3, NULL, $1->lineno, 1, $1);}
+			$$ = newMultiTree(NULL, "ExtDecList", 3, NULL, $1->lineno, 1, $1);}
 			|	VarDec COMMA ExtDecList		{
-		$$ = newMultiTree(NULL, "ExtDecList", 3, NULL, $1->lineno, 3, $1, $2, $3);}
+			$$ = newMultiTree(NULL, "ExtDecList", 3, NULL, $1->lineno, 3, $1, $2, $3);}
 			;
 
 Specifier	:	TYPE	{
-		$$ = newMultiTree(NULL, "Specifier", 3, NULL, $1->lineno, 1, $1);}
+			$$ = newMultiTree(NULL, "Specifier", 3, NULL, $1->lineno, 1, $1);}
 			|	StructSpecifier		{
-		$$ = newMultiTree(NULL, "Specifier", 3, NULL, $1->lineno, 1, $1);}
+			$$ = newMultiTree(NULL, "Specifier", 3, NULL, $1->lineno, 1, $1);}
 			;
 
 StructSpecifier	   :	STRUCT OptTag LC DefList RC		{
@@ -85,14 +86,14 @@ VarDec	:	ID	{
 			$$ = newMultiTree(NULL, "VarDec", 3, NULL, $1->lineno, 1, $1);}
 		|	VarDec LB INT RB	{
 		$$ = newMultiTree(NULL, "VarDec", 3, NULL, $1->lineno, 4, $1, $2, $3, $4);}
+		|	VarDec LB error RB {}
 		;
 
 FunDec	:	ID LP VarList RP	{
 			$$ = newMultiTree(NULL, "FunDec", 3, NULL, $1->lineno, 4, $1, $2, $3, $4);}
 		|	ID LP RP			{
 		$$ = newMultiTree(NULL, "FunDec", 3, NULL, $1->lineno, 3, $1, $2, $3);}
-		|	error RP			{
-		$$ = NULL;}		
+		|	error RP			{}
 		;
 
 VarList	:	ParamDec COMMA VarList		{
@@ -107,8 +108,7 @@ ParamDec	:	Specifier VarDec	{
 
 CompSt	:	LC DefList StmtList RC	{
 			$$ = newMultiTree(NULL, "CompSt", 3, NULL, $1->lineno, 4, $1, $2, $3, $4);}
-		|	error RC			{
-		$$ = NULL;}
+			| error RC	{}
 		;
 
 StmtList	:	/*empty*/			{
@@ -129,8 +129,7 @@ Stmt	:	Exp SEMI				{
 		$$ = newMultiTree(NULL, "Stmt", 3, NULL, $1->lineno, 6, $1, $2, $3, $4, $5, $6);}
 		|	WHILE LP Exp RP Stmt	{
 		$$ = newMultiTree(NULL, "Stmt", 3, NULL, $1->lineno, 5, $1, $2, $3, $4, $5);}
-		|	error SEMI				{
-		$$ = NULL;}
+		|	error SEMI				{}
 		;
 
 DefList    :	/*empty*/	{
@@ -191,10 +190,8 @@ Exp		:	Exp ASSIGNOP Exp	{
 		$$ = newMultiTree(NULL, "Exp", 3, NULL, $1->lineno, 1, $1);}
 		|	FLOAT				{
 		$$ = newMultiTree(NULL, "Exp", 3, NULL, $1->lineno, 1, $1);}
-		|	error RP			{
-		$$ = NULL;}
-		|	error RB			{
-		$$ = NULL;}
+		|	error RP			{}
+		|	Exp LB error RB			{}
 		;
 
 Args	:	Exp	COMMA Args		{
@@ -207,8 +204,6 @@ Args	:	Exp	COMMA Args		{
 
 yyerror(char* msg){
 	error += 1;
-	if(!lexical_error){
-		fprintf(stderr,"error in %d : %s\n",yylineno,msg);
-	}
+	fprintf(stderr,"error in %d : %s\n",yylineno,msg);
 }
 

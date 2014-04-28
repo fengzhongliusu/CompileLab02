@@ -524,10 +524,9 @@ char *yytext;
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include "util.h"
-	int lexical_error = 0;
 	int error = 0;
 	union value textval;
-#line 531 "lex.yy.c"
+#line 530 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -714,10 +713,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 22 "lexicalTest.l"
+#line 21 "lexicalTest.l"
 
 
-#line 721 "lex.yy.c"
+#line 720 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -812,165 +811,164 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 24 "lexicalTest.l"
+#line 23 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "STRUCT", 3, &textval, yylineno, 0); return STRUCT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "lexicalTest.l"
+#line 24 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "RETURN", 3, &textval, yylineno, 0); return RETURN;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 26 "lexicalTest.l"
+#line 25 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "IF", 3, &textval, yylineno, 0); return IF;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 27 "lexicalTest.l"
+#line 26 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "ELSE", 3, &textval, yylineno, 0); return ELSE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 28 "lexicalTest.l"
+#line 27 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "WHILE", 3, &textval, yylineno, 0); return WHILE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 29 "lexicalTest.l"
+#line 28 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "TYPE", 3, &textval, yylineno, 0); return TYPE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 30 "lexicalTest.l"
+#line 29 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "SEMI", 3, &textval, yylineno, 0); return SEMI;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 31 "lexicalTest.l"
+#line 30 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "COMMA", 3, &textval, yylineno, 0); return COMMA;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 32 "lexicalTest.l"
+#line 31 "lexicalTest.l"
 {yylval.op = strdup(yytext); return ASSIGNOP;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 33 "lexicalTest.l"
+#line 32 "lexicalTest.l"
 {yylval.op = strdup(yytext); return RELOP;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 34 "lexicalTest.l"
+#line 33 "lexicalTest.l"
 {yylval.op = strdup(yytext); return PLUS;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 35 "lexicalTest.l"
+#line 34 "lexicalTest.l"
 {yylval.op = strdup(yytext); return MINUS;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 36 "lexicalTest.l"
+#line 35 "lexicalTest.l"
 {yylval.op = strdup(yytext); return MUL;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 37 "lexicalTest.l"
+#line 36 "lexicalTest.l"
 {yylval.op = strdup(yytext); return DIV;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 38 "lexicalTest.l"
+#line 37 "lexicalTest.l"
 {yylval.op = strdup(yytext); return AND;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 39 "lexicalTest.l"
+#line 38 "lexicalTest.l"
 {yylval.op = strdup(yytext); return OR;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 40 "lexicalTest.l"
+#line 39 "lexicalTest.l"
 {yylval.op = strdup(yytext); return DOT;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 41 "lexicalTest.l"
+#line 40 "lexicalTest.l"
 {yylval.op = strdup(yytext); return NOT;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 42 "lexicalTest.l"
+#line 41 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "LP", 3, &textval, yylineno, 0); return LP;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 43 "lexicalTest.l"
+#line 42 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "RP", 3, &textval, yylineno, 0); return RP;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 44 "lexicalTest.l"
+#line 43 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "LB", 3, &textval, yylineno, 0); return LB;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 45 "lexicalTest.l"
+#line 44 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "RB", 3, &textval, yylineno, 0); return RB;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 46 "lexicalTest.l"
+#line 45 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "LC", 3, &textval, yylineno, 0); return LC;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 47 "lexicalTest.l"
+#line 46 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "RC", 3, &textval, yylineno, 0); return RC;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 48 "lexicalTest.l"
+#line 47 "lexicalTest.l"
 {textval.intNum = atoi(yytext); yylval.node = newMultiTree(NULL, "INT", 1, &textval,yylineno, 0); return INT;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 49 "lexicalTest.l"
+#line 48 "lexicalTest.l"
 {textval.floatNum =(float)atof(yytext); yylval.node = newMultiTree(NULL, "FLOAT", 2,&textval, yylineno, 0); return FLOAT;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 50 "lexicalTest.l"
+#line 49 "lexicalTest.l"
 {textval.id = yytext; yylval.node = newMultiTree(NULL, "ID", 3, &textval, yylineno, 0); return ID;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 51 "lexicalTest.l"
+#line 50 "lexicalTest.l"
 {}
 	YY_BREAK
 case 29:
 /* rule 29 can match eol */
 YY_RULE_SETUP
-#line 52 "lexicalTest.l"
+#line 51 "lexicalTest.l"
 {}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 53 "lexicalTest.l"
+#line 52 "lexicalTest.l"
 {
 				printf("error in %d,error lexical: %s\n",yylineno,yytext);
-				lexical_error = 1;
 				error += 1;
 			}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 59 "lexicalTest.l"
+#line 57 "lexicalTest.l"
 ECHO;
 	YY_BREAK
-#line 974 "lex.yy.c"
+#line 972 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1980,7 +1978,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 59 "lexicalTest.l"
+#line 57 "lexicalTest.l"
 
 
 

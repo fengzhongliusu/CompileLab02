@@ -75,7 +75,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 9 "syntax.y"
+#line 10 "syntax.y"
 
 	MultiTree *node;
 	char *op;

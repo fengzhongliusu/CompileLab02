@@ -4,7 +4,6 @@
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include "util.h"
-	int lexical_error = 0;
 	int error = 0;
 	union value textval;
 %}
@@ -52,7 +51,6 @@ blank {delim}+
 {newline}	{}
 .			{
 				printf("error in %d,error lexical: %s\n",yylineno,yytext);
-				lexical_error = 1;
 				error += 1;
 			}
 

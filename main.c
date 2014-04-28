@@ -16,6 +16,10 @@
  * =====================================================================================
  */
 #include <stdio.h>
+#include "util.h"
+
+extern int error;
+extern MultiTree* root;
 extern int yydebug;
 
 int main(int argc,char** argv)
@@ -32,6 +36,9 @@ int main(int argc,char** argv)
 	yyrestart(f);
 	//yydebug = 1;
 	yyparse();
+	if(error==0){
+		walk_tree(root);
+	}
 	return 0;
 }
 

@@ -3,10 +3,14 @@
 #include <stdarg.h>
 #include "util.h"
 #include <string.h>
-
+extern int error;
 
 MultiTree *newMultiTree(char *op, char *node_name, int type, union value* val, int lineno, int num, ...)
 {
+	/*if(error > 0){
+		printf("%s error arise!!,return\n",node_name);
+		return NULL;
+	}*/
 	int i;
 	va_list al;
 	MultiTree* root_node;
