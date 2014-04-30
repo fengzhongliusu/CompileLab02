@@ -1,14 +1,8 @@
-struct student
-{
-	int age;
-};
-
 int main()
 {	
 	struct student stu1;
 	int a[2][2];
 	int i;	
 	int j;
-	a[1,2] = 0;
 	return 0;
 }

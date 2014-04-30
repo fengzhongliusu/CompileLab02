@@ -53,5 +53,6 @@ void main()
 	}
 
 	temp = get_varType(hash_table,"hello");
+	if(temp!=NULL)
 	printf("%s %d\n",temp->name,temp->type->kind);
 }

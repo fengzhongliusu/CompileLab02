@@ -2,6 +2,7 @@
 #define _SEM_H
 
 #include <stdlib.h>
+#include "../util.h"
 /*
  * =====================================================================================
  *
@@ -26,6 +27,9 @@ typedef struct fun_list FunList;
 typedef struct Type_ Type;
 typedef struct FieldList_ FieldList;
 
+//符号表
+#define HASH_SIZE 0x4000
+
 /**
  * 结构体类型*/
 struct FieldList_{
@@ -40,7 +44,7 @@ struct FieldList_{
 struct Type_{
 	enum {BASIC,ARRAY,STRUCTURE} kind;
 	union{
-		int basic;			//基本类型
+		int basic;			//基本类型 1:int; 2:float
 		struct {Type* elem;int size;}array; //数组类型
 		FieldList* structure;	//结构体类型
 	}u;
@@ -60,8 +64,8 @@ struct var_list{
  */
 struct fun_list{
 	char* name;
-	int num_par;		//参数个数
-	Type* arc_type;			//参数类型
+	int num_arc;		//参数个数
+	Type* arc_type;		//参数类型
 	Type* re_type;		//返回值类型
 };
 
@@ -77,8 +81,6 @@ struct hash_list{
 };
 
 
-//遍历语法树进行语义分析
-//void sem_analy(MultiTree*, HashList*);
 
 //向哈系表添加元素
 int add_hash(HashList*,HashList*);	
@@ -96,8 +98,44 @@ int hash_cmp(HashList*,HashList*);
 //哈希函数
 unsigned int hash_func(char* name);
 
-
 //打印错误信息
-void print_err(int,char*);
+void print_err(int,int,char*);
+
+
+/*****************/
+/*语义分析模块***/
+/****************/
+
+void sem_analy(MultiTree* );
+
+void parse_extdef(Type* ,MultiTree* );
+/***********全局变量的定义***************************/
+
+void walk_extdeclist(Type* ,MultiTree* );
+
+void walk_vardec(Type* ,MultiTree* );
+
+void hash_display(HashList* );
+
+HashList hash_table[HASH_SIZE];
+
+/***********局部变量的定义***************************/
+
+void parse_def(Type* ,MultiTree* );
+
+void walk_declist(Type* ,MultiTree* );
+
+void walk_dec(Type* ,MultiTree* );
+
+
+/********************函数的定义***********************/
+
+void parse_fundec(FunList* ,MultiTree* );
+
+void walk_varlist(FunList* ,MultiTree* );
+
+void walk_param(FunList* ,int ,MultiTree* );
+
+void walk_funcvar(Type* ,MultiTree* );
 
 #endif

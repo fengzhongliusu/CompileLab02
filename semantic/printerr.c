@@ -26,7 +26,7 @@
 
 void print_err(int type,int lineno,char* err_msg)
 {
-	printf("Error type %d at line %d: ");
+	printf("Error type %d at line %d: ",type,lineno);
 	switch(type){
 		case 1:
 			printf("Undefined variable \"%s\"\n",err_msg);

@@ -12,6 +12,7 @@ MultiTree *newMultiTree(char *op, char *node_name, int type, union value* val, i
 	  return NULL;
 	  }*/
 	int i;
+	int count =0;
 	va_list al;
 	MultiTree* root_node;
 
@@ -46,11 +47,13 @@ MultiTree *newMultiTree(char *op, char *node_name, int type, union value* val, i
 		MultiTree* node = NULL;
 		for(i=0;i<num;i++){
 			node = va_arg(al,MultiTree*);
-			//assert(node->node_name != NULL);
-			//printf("%s\n",node->node_name);
-			root_node->child[i] = node;
+			if(node == NULL){
+				continue;
+			}
+			root_node->child[count] = node;
+			count++;
 		}
-		root_node->child[num] = NULL;			//遍历子节点时遇到NULL停止
+		root_node->child[count] = NULL;			//遍历子节点时遇到NULL停止
 		va_end(al);	
 	}	
 	return root_node;
@@ -77,6 +80,7 @@ void walk_tree(MultiTree* root)
 		k += 2;
 		if(root->op == NULL){			
 			for(i=0;root->child[i] != NULL;i++){
+		//		printf("!!!!%s\n",root->child[i]->node_name);
 				walk_tree(root->child[i]);
 			}
 		}

@@ -29,7 +29,7 @@ int add_hash(HashList* hash_head,HashList* hash_node)
 	int hash_no;
 	if(hash_node->list_type == 0){		//变量
 		hash_no = hash_func(hash_node->var.name);
-		printf("hash num is :%d\n",hash_no);
+		printf("Func:add_hash()--->hash num is :%d\n",hash_no);
 	}
 	else{								//函数
 		hash_no = hash_func(hash_node->func.name);
@@ -41,18 +41,18 @@ int add_hash(HashList* hash_head,HashList* hash_node)
 	}
 	else{
 		if(hash_cmp(&hash_head[hash_no],hash_node)==0){   //已存在相同名称变量或函数
-			printf("alread exits\n");
+			printf("Func:add_hash()--->alread exits\n");
 			return -1;
 		}
 		else{											//open hashing,哈希值相同的插入链出链表
-			printf("open hashing\n");
+			printf("Func:add_hash()--->open hashing\n");
 			HashList* temp = (HashList*)malloc(sizeof(HashList));
 			*temp = *hash_node;
 			hash_head[hash_no].next = temp;
 			assert(hash_head[hash_no].next!=NULL);
 		}
 	}
-	printf("insert success!!\n");
+	printf("Func:add_hash()--->insert success!!\n");
 	return 0;
 }
 
@@ -66,7 +66,7 @@ VarList* get_varType(HashList* hash_head,char *node_name)
 	hash_no = hash_func(node_name);
 
 	if(hash_head[hash_no].list_type == -1){   //哈希槽为空
-		printf("no such variable!\n");
+		printf("Func:get_varType()---->no such variable!\n");
 		return NULL;
 	}
 	else{
@@ -75,7 +75,7 @@ VarList* get_varType(HashList* hash_head,char *node_name)
 		}
 		else{
 			for(temp = &hash_head[hash_no];temp!=NULL;temp = temp->next){
-				printf("in find\n");
+				printf("Func:get_varType()---->in find\n");
 				if(strcmp(temp->var.name,node_name)==0)
 					return &(temp->var);
 			}
@@ -128,6 +128,70 @@ int hash_cmp(HashList* a,HashList* b)
 		}
 		else{
 			return strcmp(a->func.name,b->var.name)==0?0:-1;
+		}
+	}
+}
+
+void hash_display(HashList* node)
+{
+	if(node==NULL){
+		return;
+	}
+	if(node->list_type == 0){     //变量	
+		printf("node_name:%s\n",node->var.name);
+		if(node->var.type->kind == 0){
+			printf("type:basic--%d\n",node->var.type->u.basic);
+		}
+		else if(node->var.type->kind == 1){
+			printf("type: ");
+			Type* ite_type = node->var.type;
+			while(ite_type->kind == 1){
+				printf("array---%d ",ite_type->u.array.size);
+				ite_type = ite_type->u.array.elem;
+			}
+			printf("basic---%d\n",ite_type->u.basic);
+		}
+		else{
+			printf("struct");
+		}
+	}
+	else
+	{			//函数
+		assert(node->list_type == 1);
+		FunList* func = &node->func;
+		int i;
+
+		printf("node_name:%s\n",func->name);
+		printf("return type: ");		
+		if(func->re_type->kind == 0)
+			printf("basic: %d\n",func->re_type->u.basic);
+		else
+			printf("struct\n");
+
+		if(func->num_arc != 0)
+		{		//有参数
+			for(i=0;i<func->num_arc;i++)
+			{
+				printf("type:%d\n",func->arc_type[i].kind);
+				printf("arc %d: ",i);
+				if(func->arc_type[i].kind == 0)
+				{
+					printf("basic: %d\n",func->arc_type[i].u.basic);
+				}
+				else if(func->arc_type[i].kind == 1)
+				{
+					printf("type: ");
+					Type* ite_type = &(func->arc_type[i]);
+					while(ite_type->kind == 1)
+					{
+						printf("array---%d ",ite_type->u.array.size);
+						ite_type = ite_type->u.array.elem;
+					}
+					printf("basic---%d\n",ite_type->u.basic);
+				}
+				else
+					printf("type:struct\n");
+			}
 		}
 	}
 }
