@@ -27,7 +27,9 @@
 int add_hash(HashList* hash_head,HashList* hash_node)	
 {
 	int hash_no;
-	if(hash_node->list_type == 0){		//变量
+	if(hash_node->var.name == NULL)	//结构体定义
+		hash_no = hash_func(hash_node->var.type->u.structure->name);
+	else if(hash_node->list_type == 0){		//变量
 		hash_no = hash_func(hash_node->var.name);
 		printf("Func:add_hash()--->hash num is :%d\n",hash_no);
 	}
@@ -208,4 +210,35 @@ unsigned int hash_func(char* name)
 	}
 	return val;
 }
+
+//比较type是否相同
+int typecmp(Type* type1, Type* type2)
+{
+	assert(type1 != NULL && type2 != NULL);
+
+	if(type1->kind != type2->kind)
+		return -1;
+	if(type1->kind == BASIC)
+	{
+		if(type1->u.basic != type2->u.basic)
+		return -1;
+		else
+			return 0;
+	}
+	else if(type1->kind == ARRAY)
+	{
+		if(type1->u.array.size != type2->u.array.size)
+			return -1;
+		return typecmp(type1->u.array.elem, type2->u.array.elem);
+	}
+	else if(type1->kind == STRUCTURE)
+	{ 
+		if(memcmp(type1->u.structure->name, type2->u.structure->name,
+					strlen(type1->u.structure->name)) != 0)
+			return -1;
+		else
+			return 0;
+	}
+}
+		
 

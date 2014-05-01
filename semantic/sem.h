@@ -38,6 +38,11 @@ struct FieldList_{
 	struct FieldList_* tail;	//下一个域
 };
 
+typedef struct {
+    char* name;
+	FieldList* structure;
+} structtype;
+
 /**
  * 变量类型
  * */
@@ -46,8 +51,9 @@ struct Type_{
 	union{
 		int basic;			//基本类型 1:int; 2:float
 		struct {Type* elem;int size;}array; //数组类型
-		FieldList* structure;	//结构体类型
+		structtype* structure;	//结构体类型
 	}u;
+
 };
 
 
@@ -91,8 +97,10 @@ VarList* get_varType(HashList*,char *);
 //获取函数的返回值类型以及参数类型
 FunList* get_funType(HashList*,char*);  
 
+//比较type是否相同
+int typecmp(Type *, Type *);
 
-//比较hash结构体积
+//比较hash结构
 int hash_cmp(HashList*,HashList*);
 
 //哈希函数
@@ -127,6 +135,16 @@ void walk_declist(Type* ,MultiTree* );
 
 void walk_dec(Type* ,MultiTree* );
 
+void parse_exp(Type* , MultiTree* );
+
+void parse_compst(MultiTree* , MultiTree* );
+
+void walk_deflist(Type*, MultiTree* );
+
+void walk_stmtlist(Type*, MultiTree* );
+
+void walk_stmt(Type* , MultiTree* );
+
 
 /********************函数的定义***********************/
 
@@ -137,5 +155,21 @@ void walk_varlist(FunList* ,MultiTree* );
 void walk_param(FunList* ,int ,MultiTree* );
 
 void walk_funcvar(Type* ,MultiTree* );
+
+int count_arc(MultiTree *);
+
+/******************处理定义结构体********************/
+void walk_structdeflist(Type *, MultiTree *);
+
+void walk_structdef(Type *, MultiTree *);
+
+void walk_structdeclist(Type *, Type *, MultiTree *);
+
+void walk_structdec(Type *, Type *, MultiTree *);
+
+void walk_structvar(Type *, Type *, MultiTree *);
+
+void structtype_add(Type *, Type *, MultiTree *);
+
 
 #endif

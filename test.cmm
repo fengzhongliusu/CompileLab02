@@ -1,4 +1,15 @@
+struct a {
+	int a, b;
+	float c;
+	int d[2][3];
+	float b;
+	float f[2][3][4];
+	int a = 15;
+};
+
+
 float main(float a,int b,float c)
 {
 	int i;
+	int a;
 }

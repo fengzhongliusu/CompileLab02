@@ -68,10 +68,16 @@ void print_err(int type,int lineno,char* err_msg)
 			printf("Illegal use of \"%s\"\n",err_msg);
 			break;
 		case 14:
-			printf("Un-existed field \"%s\"",err_msg);
+			printf("Un-existed field \"%s\"\n",err_msg);
 			break;
 		case 15:
-			printf("Redefined field \"%s\"",err_msg);
+			printf("Redefined field \"%s\"\n",err_msg);
+			break;
+		case 16:
+			printf("wront type of expression in \"%s\"\n",err_msg);
+			break;
+		case 17:
+			printf("no return statement in function \"%s\"\n",err_msg);
 			break;
 		default: 
 			printf("wrong error type!!\n");

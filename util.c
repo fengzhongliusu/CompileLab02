@@ -18,6 +18,7 @@ MultiTree *newMultiTree(char *op, char *node_name, int type, union value* val, i
 
 	root_node = (MultiTree*)malloc(sizeof(MultiTree));
 	root_node->child = (MultiTree**)malloc((num+1)*sizeof(MultiTree*));
+	
 	root_node->op = op;
 	root_node->type = type;
 	root_node->node_name = strdup(node_name);
@@ -85,6 +86,7 @@ void walk_tree(MultiTree* root)
 			}
 		}
 		else{
+			printf("root->child %x\n", (int)root->child);
 			if(get_childnum(root)==1){
 				printf("%*c",k,' ');
 				printf("%s\n",root->op);
