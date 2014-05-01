@@ -29,6 +29,8 @@ typedef struct FieldList_ FieldList;
 
 //符号表
 #define HASH_SIZE 0x4000
+#define MAX_NODE 100
+#define MAX_TYPE 1024
 
 /**
  * 结构体类型*/
@@ -137,6 +139,8 @@ void walk_dec(Type* ,MultiTree* );
 
 void parse_exp(Type* , MultiTree* );
 
+void walk_arg(char*,int,Type*,MultiTree*);
+
 void parse_compst(MultiTree* , MultiTree* );
 
 void walk_deflist(Type*, MultiTree* );
@@ -171,5 +175,12 @@ void walk_structvar(Type *, Type *, MultiTree *);
 
 void structtype_add(Type *, Type *, MultiTree *);
 
+Type* get_structvar(Type*,char*);   //type of variable in a structure
+
+
+int hash_heap_no;
+HashList hash_heap[MAX_TYPE];
+int type_heap_no;
+Type type_heap[MAX_TYPE];
 
 #endif

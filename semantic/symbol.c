@@ -64,7 +64,7 @@ VarList* get_varType(HashList* hash_head,char *node_name)
 {
 	int hash_no;
 	HashList* temp;
-
+	
 	hash_no = hash_func(node_name);
 
 	if(hash_head[hash_no].list_type == -1){   //哈希槽为空
@@ -73,16 +73,25 @@ VarList* get_varType(HashList* hash_head,char *node_name)
 	}
 	else{
 		if(hash_head[hash_no].next == NULL){  //槽内只有一个值
+			assert(&(hash_head[hash_no].var)!=NULL);
 			return &(hash_head[hash_no].var);
 		}
 		else{
 			for(temp = &hash_head[hash_no];temp!=NULL;temp = temp->next){
 				printf("Func:get_varType()---->in find\n");
-				if(strcmp(temp->var.name,node_name)==0)
-					return &(temp->var);
+				if(temp->var.name == NULL){					
+					if(strcmp(temp->var.type->u.structure->name,node_name)==0){
+						return &(temp->var);
+					}
+				}
+				else{
+					if(strcmp(temp->var.name,node_name)==0)
+						return &(temp->var);
+				}
 			}
 		}
 	}
+
 	return NULL;    //对应槽有值，但名称不是node_name
 }
 
