@@ -5,6 +5,7 @@
 	#include "util.h"
 	#include "lex.yy.c"
 	MultiTree* root;
+	extern int error;
 %}
 
 %union {

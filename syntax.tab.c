@@ -74,10 +74,11 @@
 	#include "util.h"
 	#include "lex.yy.c"
 	MultiTree* root;
+	extern int error;
 
 
 /* Line 268 of yacc.c  */
-#line 81 "syntax.tab.c"
+#line 82 "syntax.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -142,7 +143,7 @@ typedef union YYSTYPE
 {
 
 /* Line 293 of yacc.c  */
-#line 10 "syntax.y"
+#line 11 "syntax.y"
 
 	MultiTree *node;
 	char *op;
@@ -150,7 +151,7 @@ typedef union YYSTYPE
 
 
 /* Line 293 of yacc.c  */
-#line 154 "syntax.tab.c"
+#line 155 "syntax.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -162,7 +163,7 @@ typedef union YYSTYPE
 
 
 /* Line 343 of yacc.c  */
-#line 166 "syntax.tab.c"
+#line 167 "syntax.tab.c"
 
 #ifdef short
 # undef short
@@ -478,13 +479,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    36,    36,    43,    45,    49,    51,    53,    57,    59,
-      63,    65,    69,    71,    75,    77,    81,    85,    87,    89,
-      92,    94,    96,    99,   101,   105,   109,   111,   114,   116,
-     120,   122,   124,   126,   128,   130,   132,   135,   137,   141,
-     145,   147,   151,   153,   157,   159,   161,   163,   165,   167,
-     169,   171,   173,   175,   177,   179,   181,   183,   185,   187,
-     189,   191,   193,   194,   197,   199
+       0,    37,    37,    44,    46,    50,    52,    54,    58,    60,
+      64,    66,    70,    72,    76,    78,    82,    86,    88,    90,
+      93,    95,    97,   100,   102,   106,   110,   112,   115,   117,
+     121,   123,   125,   127,   129,   131,   133,   136,   138,   142,
+     146,   148,   152,   154,   158,   160,   162,   164,   166,   168,
+     170,   172,   174,   176,   178,   180,   182,   184,   186,   188,
+     190,   192,   194,   195,   198,   200
 };
 #endif
 
@@ -1526,7 +1527,7 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 36 "syntax.y"
+#line 37 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Program", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));
 			//assert($1->node_name != NULL);
@@ -1537,7 +1538,7 @@ yyreduce:
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 43 "syntax.y"
+#line 44 "syntax.y"
     {
 			(yyval.node) = NULL;}
     break;
@@ -1545,7 +1546,7 @@ yyreduce:
   case 4:
 
 /* Line 1806 of yacc.c  */
-#line 45 "syntax.y"
+#line 46 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "ExtDefList", 3, NULL, (yyvsp[(1) - (2)].node)->lineno, 2, (yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node));}
     break;
@@ -1553,7 +1554,7 @@ yyreduce:
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 49 "syntax.y"
+#line 50 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "ExtDef", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1561,7 +1562,7 @@ yyreduce:
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 51 "syntax.y"
+#line 52 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "ExtDef", 3, NULL, (yyvsp[(1) - (2)].node)->lineno, 2, (yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node));}
     break;
@@ -1569,7 +1570,7 @@ yyreduce:
   case 7:
 
 /* Line 1806 of yacc.c  */
-#line 53 "syntax.y"
+#line 54 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "ExtDef", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1577,7 +1578,7 @@ yyreduce:
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 57 "syntax.y"
+#line 58 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "ExtDecList", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1585,7 +1586,7 @@ yyreduce:
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 59 "syntax.y"
+#line 60 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "ExtDecList", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1593,7 +1594,7 @@ yyreduce:
   case 10:
 
 /* Line 1806 of yacc.c  */
-#line 63 "syntax.y"
+#line 64 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Specifier", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1601,7 +1602,7 @@ yyreduce:
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 65 "syntax.y"
+#line 66 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Specifier", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1609,7 +1610,7 @@ yyreduce:
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 69 "syntax.y"
+#line 70 "syntax.y"
     {
 						(yyval.node) = newMultiTree(NULL, "StructSpecifier", 3, NULL, (yyvsp[(1) - (5)].node)->lineno, 5, (yyvsp[(1) - (5)].node), (yyvsp[(2) - (5)].node), (yyvsp[(3) - (5)].node), (yyvsp[(4) - (5)].node), (yyvsp[(5) - (5)].node));}
     break;
@@ -1617,7 +1618,7 @@ yyreduce:
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 71 "syntax.y"
+#line 72 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "StructSpecifier", 3, NULL, (yyvsp[(1) - (2)].node)->lineno, 2, (yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node));}
     break;
@@ -1625,7 +1626,7 @@ yyreduce:
   case 14:
 
 /* Line 1806 of yacc.c  */
-#line 75 "syntax.y"
+#line 76 "syntax.y"
     {
 	    (yyval.node) = NULL;}
     break;
@@ -1633,7 +1634,7 @@ yyreduce:
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 77 "syntax.y"
+#line 78 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "OptTag", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1641,7 +1642,7 @@ yyreduce:
   case 16:
 
 /* Line 1806 of yacc.c  */
-#line 81 "syntax.y"
+#line 82 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Tag", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1649,7 +1650,7 @@ yyreduce:
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 85 "syntax.y"
+#line 86 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "VarDec", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1657,7 +1658,7 @@ yyreduce:
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 87 "syntax.y"
+#line 88 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "VarDec", 3, NULL, (yyvsp[(1) - (4)].node)->lineno, 4, (yyvsp[(1) - (4)].node), (yyvsp[(2) - (4)].node), (yyvsp[(3) - (4)].node), (yyvsp[(4) - (4)].node));}
     break;
@@ -1665,14 +1666,14 @@ yyreduce:
   case 19:
 
 /* Line 1806 of yacc.c  */
-#line 89 "syntax.y"
+#line 90 "syntax.y"
     {}
     break;
 
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 92 "syntax.y"
+#line 93 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "FunDec", 3, NULL, (yyvsp[(1) - (4)].node)->lineno, 4, (yyvsp[(1) - (4)].node), (yyvsp[(2) - (4)].node), (yyvsp[(3) - (4)].node), (yyvsp[(4) - (4)].node));}
     break;
@@ -1680,7 +1681,7 @@ yyreduce:
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 94 "syntax.y"
+#line 95 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "FunDec", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1688,14 +1689,14 @@ yyreduce:
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 96 "syntax.y"
+#line 97 "syntax.y"
     {}
     break;
 
   case 23:
 
 /* Line 1806 of yacc.c  */
-#line 99 "syntax.y"
+#line 100 "syntax.y"
     {
 				(yyval.node) = newMultiTree(NULL, "VarList", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1703,7 +1704,7 @@ yyreduce:
   case 24:
 
 /* Line 1806 of yacc.c  */
-#line 101 "syntax.y"
+#line 102 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "VarList", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1711,7 +1712,7 @@ yyreduce:
   case 25:
 
 /* Line 1806 of yacc.c  */
-#line 105 "syntax.y"
+#line 106 "syntax.y"
     {
 				(yyval.node) = newMultiTree(NULL, "ParamDec", 3, NULL, (yyvsp[(1) - (2)].node)->lineno, 2, (yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node));}
     break;
@@ -1719,7 +1720,7 @@ yyreduce:
   case 26:
 
 /* Line 1806 of yacc.c  */
-#line 109 "syntax.y"
+#line 110 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "CompSt", 3, NULL, (yyvsp[(1) - (4)].node)->lineno, 4, (yyvsp[(1) - (4)].node), (yyvsp[(2) - (4)].node), (yyvsp[(3) - (4)].node), (yyvsp[(4) - (4)].node));}
     break;
@@ -1727,14 +1728,14 @@ yyreduce:
   case 27:
 
 /* Line 1806 of yacc.c  */
-#line 111 "syntax.y"
+#line 112 "syntax.y"
     {}
     break;
 
   case 28:
 
 /* Line 1806 of yacc.c  */
-#line 114 "syntax.y"
+#line 115 "syntax.y"
     {
 		(yyval.node) = NULL;}
     break;
@@ -1742,7 +1743,7 @@ yyreduce:
   case 29:
 
 /* Line 1806 of yacc.c  */
-#line 116 "syntax.y"
+#line 117 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "StmtList", 3, NULL, (yyvsp[(1) - (2)].node)->lineno, 2, (yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node));}
     break;
@@ -1750,7 +1751,7 @@ yyreduce:
   case 30:
 
 /* Line 1806 of yacc.c  */
-#line 120 "syntax.y"
+#line 121 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Stmt", 3, NULL, (yyvsp[(1) - (2)].node)->lineno, 2, (yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node));}
     break;
@@ -1758,7 +1759,7 @@ yyreduce:
   case 31:
 
 /* Line 1806 of yacc.c  */
-#line 122 "syntax.y"
+#line 123 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Stmt", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1766,7 +1767,7 @@ yyreduce:
   case 32:
 
 /* Line 1806 of yacc.c  */
-#line 124 "syntax.y"
+#line 125 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Stmt", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1774,7 +1775,7 @@ yyreduce:
   case 33:
 
 /* Line 1806 of yacc.c  */
-#line 126 "syntax.y"
+#line 127 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Stmt", 3, NULL, (yyvsp[(1) - (5)].node)->lineno, 5, (yyvsp[(1) - (5)].node), (yyvsp[(2) - (5)].node), (yyvsp[(3) - (5)].node), (yyvsp[(4) - (5)].node), (yyvsp[(5) - (5)].node));}
     break;
@@ -1782,7 +1783,7 @@ yyreduce:
   case 34:
 
 /* Line 1806 of yacc.c  */
-#line 128 "syntax.y"
+#line 129 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Stmt", 3, NULL, (yyvsp[(1) - (7)].node)->lineno, 7, (yyvsp[(1) - (7)].node), (yyvsp[(2) - (7)].node), (yyvsp[(3) - (7)].node), (yyvsp[(4) - (7)].node), (yyvsp[(5) - (7)].node), (yyvsp[(6) - (7)].node), (yyvsp[(7) - (7)].node));}
     break;
@@ -1790,7 +1791,7 @@ yyreduce:
   case 35:
 
 /* Line 1806 of yacc.c  */
-#line 130 "syntax.y"
+#line 131 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Stmt", 3, NULL, (yyvsp[(1) - (5)].node)->lineno, 5, (yyvsp[(1) - (5)].node), (yyvsp[(2) - (5)].node), (yyvsp[(3) - (5)].node), (yyvsp[(4) - (5)].node), (yyvsp[(5) - (5)].node));}
     break;
@@ -1798,14 +1799,14 @@ yyreduce:
   case 36:
 
 /* Line 1806 of yacc.c  */
-#line 132 "syntax.y"
+#line 133 "syntax.y"
     {}
     break;
 
   case 37:
 
 /* Line 1806 of yacc.c  */
-#line 135 "syntax.y"
+#line 136 "syntax.y"
     {
 				(yyval.node) = NULL;}
     break;
@@ -1813,7 +1814,7 @@ yyreduce:
   case 38:
 
 /* Line 1806 of yacc.c  */
-#line 137 "syntax.y"
+#line 138 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "DefList", 3, NULL, (yyvsp[(1) - (2)].node)->lineno, 2, (yyvsp[(1) - (2)].node), (yyvsp[(2) - (2)].node));}
     break;
@@ -1821,7 +1822,7 @@ yyreduce:
   case 39:
 
 /* Line 1806 of yacc.c  */
-#line 141 "syntax.y"
+#line 142 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Def", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1829,7 +1830,7 @@ yyreduce:
   case 40:
 
 /* Line 1806 of yacc.c  */
-#line 145 "syntax.y"
+#line 146 "syntax.y"
     {
 				(yyval.node) = newMultiTree(NULL, "DecList", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1837,7 +1838,7 @@ yyreduce:
   case 41:
 
 /* Line 1806 of yacc.c  */
-#line 147 "syntax.y"
+#line 148 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "DecList", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1845,7 +1846,7 @@ yyreduce:
   case 42:
 
 /* Line 1806 of yacc.c  */
-#line 151 "syntax.y"
+#line 152 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Dec", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1853,7 +1854,7 @@ yyreduce:
   case 43:
 
 /* Line 1806 of yacc.c  */
-#line 153 "syntax.y"
+#line 154 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Dec", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1861,7 +1862,7 @@ yyreduce:
   case 44:
 
 /* Line 1806 of yacc.c  */
-#line 157 "syntax.y"
+#line 158 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1869,7 +1870,7 @@ yyreduce:
   case 45:
 
 /* Line 1806 of yacc.c  */
-#line 159 "syntax.y"
+#line 160 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1877,7 +1878,7 @@ yyreduce:
   case 46:
 
 /* Line 1806 of yacc.c  */
-#line 161 "syntax.y"
+#line 162 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1885,7 +1886,7 @@ yyreduce:
   case 47:
 
 /* Line 1806 of yacc.c  */
-#line 163 "syntax.y"
+#line 164 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1893,7 +1894,7 @@ yyreduce:
   case 48:
 
 /* Line 1806 of yacc.c  */
-#line 165 "syntax.y"
+#line 166 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1901,7 +1902,7 @@ yyreduce:
   case 49:
 
 /* Line 1806 of yacc.c  */
-#line 167 "syntax.y"
+#line 168 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1909,7 +1910,7 @@ yyreduce:
   case 50:
 
 /* Line 1806 of yacc.c  */
-#line 169 "syntax.y"
+#line 170 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1917,7 +1918,7 @@ yyreduce:
   case 51:
 
 /* Line 1806 of yacc.c  */
-#line 171 "syntax.y"
+#line 172 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1925,7 +1926,7 @@ yyreduce:
   case 52:
 
 /* Line 1806 of yacc.c  */
-#line 173 "syntax.y"
+#line 174 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1933,7 +1934,7 @@ yyreduce:
   case 53:
 
 /* Line 1806 of yacc.c  */
-#line 175 "syntax.y"
+#line 176 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(1) - (2)].op), "Exp", 3, NULL, (yyvsp[(2) - (2)].node)->lineno, 1, (yyvsp[(2) - (2)].node));}
     break;
@@ -1941,7 +1942,7 @@ yyreduce:
   case 54:
 
 /* Line 1806 of yacc.c  */
-#line 177 "syntax.y"
+#line 178 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(1) - (2)].op), "Exp", 3, NULL, (yyvsp[(2) - (2)].node)->lineno, 1, (yyvsp[(2) - (2)].node));}
     break;
@@ -1949,7 +1950,7 @@ yyreduce:
   case 55:
 
 /* Line 1806 of yacc.c  */
-#line 179 "syntax.y"
+#line 180 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (4)].node)->lineno, 4, (yyvsp[(1) - (4)].node), (yyvsp[(2) - (4)].node), (yyvsp[(3) - (4)].node), (yyvsp[(4) - (4)].node));}
     break;
@@ -1957,7 +1958,7 @@ yyreduce:
   case 56:
 
 /* Line 1806 of yacc.c  */
-#line 181 "syntax.y"
+#line 182 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1965,7 +1966,7 @@ yyreduce:
   case 57:
 
 /* Line 1806 of yacc.c  */
-#line 183 "syntax.y"
+#line 184 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (4)].node)->lineno, 4, (yyvsp[(1) - (4)].node), (yyvsp[(2) - (4)].node), (yyvsp[(3) - (4)].node), (yyvsp[(4) - (4)].node));}
     break;
@@ -1973,7 +1974,7 @@ yyreduce:
   case 58:
 
 /* Line 1806 of yacc.c  */
-#line 185 "syntax.y"
+#line 186 "syntax.y"
     {
 		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -1981,7 +1982,7 @@ yyreduce:
   case 59:
 
 /* Line 1806 of yacc.c  */
-#line 187 "syntax.y"
+#line 188 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1989,7 +1990,7 @@ yyreduce:
   case 60:
 
 /* Line 1806 of yacc.c  */
-#line 189 "syntax.y"
+#line 190 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -1997,7 +1998,7 @@ yyreduce:
   case 61:
 
 /* Line 1806 of yacc.c  */
-#line 191 "syntax.y"
+#line 192 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -2005,21 +2006,21 @@ yyreduce:
   case 62:
 
 /* Line 1806 of yacc.c  */
-#line 193 "syntax.y"
+#line 194 "syntax.y"
     {}
     break;
 
   case 63:
 
 /* Line 1806 of yacc.c  */
-#line 194 "syntax.y"
+#line 195 "syntax.y"
     {}
     break;
 
   case 64:
 
 /* Line 1806 of yacc.c  */
-#line 197 "syntax.y"
+#line 198 "syntax.y"
     {
 			(yyval.node) = newMultiTree(NULL, "Args", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
@@ -2027,7 +2028,7 @@ yyreduce:
   case 65:
 
 /* Line 1806 of yacc.c  */
-#line 199 "syntax.y"
+#line 200 "syntax.y"
     {
 		(yyval.node) = newMultiTree(NULL, "Args", 3, NULL, (yyvsp[(1) - (1)].node)->lineno, 1, (yyvsp[(1) - (1)].node));}
     break;
@@ -2035,7 +2036,7 @@ yyreduce:
 
 
 /* Line 1806 of yacc.c  */
-#line 2039 "syntax.tab.c"
+#line 2040 "syntax.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2266,7 +2267,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 203 "syntax.y"
+#line 204 "syntax.y"
 
 
 yyerror(char* msg){

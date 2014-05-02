@@ -56,7 +56,7 @@ void print_err(int type,int lineno,char* err_msg)
 			printf("mismatched arguments for function \"%s\"\n",err_msg);
 			break;
 		case 10:
-			printf("\"%s\" must be an array\n",err_msg);
+			printf("variable is not an array\n");
 			break;
 		case 11:
 			printf("\"%s\" must be a function\n",err_msg);
@@ -78,6 +78,12 @@ void print_err(int type,int lineno,char* err_msg)
 			break;
 		case 17:
 			printf("no return statement in function \"%s\"\n",err_msg);
+			break;
+		case 18:
+			printf("redefine struct \"%s\"\n",err_msg);
+			break;
+		case 19:
+			printf("cannot do assignment in struct\n");
 			break;
 		default: 
 			printf("wrong error type!!\n");

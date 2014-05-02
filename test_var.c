@@ -49,10 +49,11 @@ int main(int argc,char** argv)
 	yyrestart(f);
 	//yydebug = 1;
 	yyparse();
-	/*if(error==0){
-		walk_tree(root);
-	}*/
+	if(error != 0){
+		exit(1);
+	}
 
+	//walk_tree(root);
 	sem_analy(root);
 
 	FunList* fun = get_funType(hash_table,"main");

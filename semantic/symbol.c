@@ -125,12 +125,19 @@ FunList* get_funType(HashList* hash_head,char *node_name)
 //比较哈希表元素是否相同(比较名字)
 int hash_cmp(HashList* a,HashList* b)
 {
+	char *name1, *name2;
 	if(a->list_type == b->list_type){
 		if(a->list_type == 0){   //a,b:var
 			if(a->var.name == NULL)
-				return strcmp(a->var.type->u.structure->name,b->var.name)==0?0:-1;
+				name1 = a->var.type->u.structure->name;
 			else
-				return strcmp(a->var.name,b->var.name)==0?0:-1;
+				name1 = a->var.name;
+			if(b->var.name == NULL)
+				name2 = b->var.type->u.structure->name;
+			else
+				name2 = b->var.name;
+			return strcmp(name1, name2) == 0 ? 0 : -1;
+
 		}
 		else{
 			return strcmp(a->func.name,b->func.name)==0?0:-1;
@@ -138,10 +145,18 @@ int hash_cmp(HashList* a,HashList* b)
 	}
 	else{
 		if(a->list_type == 0){	//a:var b:func
-			return strcmp(a->var.name,b->func.name)==0?0:-1;
+			if(a->var.name == NULL)
+				name1 = a->var.type->u.structure->name;
+			else
+				name1 = a->var.name;
+			return strcmp(name1,b->func.name)==0?0:-1;
 		}
 		else{
-			return strcmp(a->func.name,b->var.name)==0?0:-1;
+			if(b->var.name == NULL)
+				name2 = b->var.type->u.structure->name;
+			else
+				name2 = b->var.name;
+			return strcmp(a->func.name,name2)==0?0:-1;
 		}
 	}
 }

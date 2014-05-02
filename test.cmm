@@ -9,6 +9,11 @@ int bufdo(int i, int j, struct s k)
 {
 }
 
+struct s {
+	int c;
+	float d;
+};
+
 struct s bufdo()
 {
 	return a[3];
@@ -31,10 +36,13 @@ float main(float a,int b,float c)
 	ss = fs;
 	ss = s + 1;
 	j = i + 1;
+	bufdo(i,i,struct_s);
 	bufdo(i);
 	i[nojoke] = 1;
 	i(5);
 	struct_s.a = 1;
+	q.a = 1;
+	struct_s.f = 2;
 	if(fff == 1) {
 		aa;
 	}
@@ -44,6 +52,6 @@ float main(float a,int b,float c)
 	while(ggg = 1) {
 		cc;
 	}
-	return e;
+	return k;
 
 }

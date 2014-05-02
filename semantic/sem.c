@@ -35,7 +35,7 @@ void sem_analy(MultiTree* root)
 		if(strcmp(root->node_name,"ExtDef")==0){		//全局变量,函数,结构体积定义
 			Type* type = &type_heap[type_heap_no++];
 			parse_extdef(type,root);
-			printf("--now rule : ExtDef\n");
+			//printf("--now rule : ExtDef\n");
 		}
 		else{
 			if(root->child!=NULL)
@@ -90,7 +90,8 @@ void parse_extdef(Type* type,MultiTree* root)
 			hash_node->var.name = NULL;
 			memcpy(hash_node->var.type, type, sizeof(Type));
 			hash_node->next = NULL;
-			add_hash(hash_table, hash_node);
+			if(add_hash(hash_table, hash_node) != 0)
+				print_err(18, spe_node->child[0]->lineno, hash_node->var.type->u.structure->name);
 
 
 		}
@@ -229,7 +230,7 @@ void walk_structdec(Type* type, Type* fieldtype, MultiTree* root)
 {
 	walk_structvar(type, fieldtype, root->child[0]);
 	if(get_childnum(root) > 1)
-		print_err(15, root->lineno, "assignment in struct");	//TODO struct赋值
+		print_err(19, root->lineno, NULL);	//TODO struct赋值
 }
 
 void walk_structvar(Type* type, Type* fieldtype, MultiTree* root)
@@ -265,7 +266,7 @@ void structtype_add(Type* type, Type* fieldtype, MultiTree *root)
 		memcpy(ptr->type, fieldtype, sizeof(Type));
 		ptr->tail = NULL;
 		type->u.structure->structure = ptr;
-		printf("add name=%s, type=%d to struct %s\n", id, ptr->type->kind, type->u.structure->name);
+		//printf("add name=%s, type=%d to struct %s\n", id, ptr->type->kind, type->u.structure->name);
 	}
 	else
 	{
@@ -281,14 +282,14 @@ void structtype_add(Type* type, Type* fieldtype, MultiTree *root)
 		ptr->tail->type = &type_heap[type_heap_no++];
 		memcpy(ptr->tail->type, fieldtype, sizeof(Type));
 		ptr->tail->tail = NULL;
-		printf("add name=%s, kind=%d, ", id, ptr->tail->type->kind);
+		/*printf("add name=%s, kind=%d, ", id, ptr->tail->type->kind);
 		if(ptr->tail->type->kind == 0)
 			printf("basic=%d ", ptr->tail->type->u.basic);
 		else if(ptr->tail->type->kind == 1)
 			printf("size=%d ", ptr->tail->type->u.array.size);
 		else
 			printf("name=%s ", ptr->tail->type->u.structure->name);
-		printf("to struct %s\n", type->u.structure->name);
+		printf("to struct %s\n", type->u.structure->name);*/
 	}
 }	
 
@@ -392,14 +393,14 @@ void parse_fundec(FunList* funlist,MultiTree* root)
 		hash_node->func = *funlist;
 		free(funlist);					/***TODO:test****/
 		hash_node->next = NULL;
-		printf("func:funcdec()--->name:%s\n",hash_node->func.name);
+		//printf("func:funcdec()--->name:%s\n",hash_node->func.name);
 		if(add_hash(hash_table,hash_node) != 0)		//加入符号表,可能重定义
 			print_err(4, root->child[0]->lineno, root->child[0]->val.id);
 	}
 	else					//有参数
 	{
 		funlist->num_arc = count_arc(root->child[2], "new");		//参数个数
-		printf("参数个数 %d\n",funlist->num_arc);
+		//printf("参数个数 %d\n",funlist->num_arc);
 		funlist->arc_type = &type_heap[type_heap_no];
 		type_heap_no += funlist->num_arc;
 		walk_varlist(funlist,root->child[2]);
@@ -421,12 +422,12 @@ void walk_varlist(FunList* funlist,MultiTree* root)		//TODO:test-同时两个函
 		memcpy(&hash_node.func, funlist, sizeof(FunList));
 		free(funlist);					/***TODO:test****/
 		hash_node.next = NULL;		
-		printf("func:varlist()--->name:%s\n",hash_node.func.name);
+		/*printf("func:varlist()--->name:%s\n",hash_node.func.name);
 		int i;
 		for(i = 0;i< hash_node.func.num_arc;i++)
 		{
 			printf("arc%d type: %d\n",i,hash_node.func.arc_type[i].kind);
-		}
+		}*/
 		if(add_hash(hash_table,&hash_node) != 0)		//加入符号表,可能重定义
 			print_err(4, root->child[0]->lineno, root->child[0]->val.id);
 	}
@@ -440,7 +441,7 @@ void walk_varlist(FunList* funlist,MultiTree* root)		//TODO:test-同时两个函
 
 void walk_param(FunList* funlist,int arc_num,MultiTree* root)
 {
-	printf("num of arc is %d\n",arc_num);
+	//printf("num of arc is %d\n",arc_num);
 	MultiTree* spe_node = root->child[0];
 	if(strcmp(spe_node->child[0]->node_name,"TYPE")==0)
 	{		
@@ -482,7 +483,7 @@ void walk_funcvar(Type* type,MultiTree* root)
 		else{
 			Type* embed_type = &type_heap[type_heap_no++];
 			memcpy(embed_type,type,sizeof(Type));
-			printf("embed type is %d\n",embed_type->kind);
+			//printf("embed type is %d\n",embed_type->kind);
 
 			type->kind = ARRAY;
 			type->u.array.size = root->child[2]->val.intNum;
@@ -499,7 +500,6 @@ int count_arc(MultiTree* root, char * sign)
 		i = 0;
 	i++;
 	if(root->child[1]==NULL){
-		printf("ret\n");
 		return i;
 	}
 	else{
@@ -643,7 +643,7 @@ void parse_exp(Type* type,MultiTree* root)
 				parse_exp(type,root->child[0]);
 				if(type->kind != ARRAY)
 				{
-					print_err(10, root->child[0]->lineno, root->child[0]->node_name);
+					print_err(10, root->child[0]->lineno, NULL);
 				}
 				Type* sign_type = &type_heap[type_heap_no++];
 				parse_exp(sign_type,root->child[2]);
