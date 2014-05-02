@@ -131,7 +131,7 @@ HashList hash_table[HASH_SIZE];
 
 /***********局部变量的定义***************************/
 
-void parse_def(Type* ,MultiTree* );
+void parse_def(Type*, MultiTree* );
 
 void walk_declist(Type* ,MultiTree* );
 
@@ -143,11 +143,13 @@ void walk_arg(char*,int,Type*,MultiTree*, char *);
 
 void parse_compst(MultiTree* , MultiTree* );
 
-void walk_deflist(Type*, MultiTree* );
+void walk_deflist(MultiTree* );
 
-void walk_stmtlist(Type*, MultiTree* );
+void walk_stmtlist(MultiTree* );
 
-void walk_stmt(Type* , MultiTree* );
+void walk_stmt(MultiTree* );
+
+int ck_lvalue(MultiTree *);
 
 
 /********************函数的定义***********************/

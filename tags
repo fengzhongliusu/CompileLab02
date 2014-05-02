@@ -68,6 +68,8 @@ LOWER_THAN_ELSE	syntax.tab.c	/^     LOWER_THAN_ELSE = 285$/;"	e	enum:yytokentype
 LOWER_THAN_ELSE	syntax.tab.h	/^     LOWER_THAN_ELSE = 285$/;"	e	enum:yytokentype
 LP	syntax.tab.c	/^     LP = 268,$/;"	e	enum:yytokentype	file:
 LP	syntax.tab.h	/^     LP = 268,$/;"	e	enum:yytokentype
+MAX_NODE	semantic/sem.h	32;"	d
+MAX_TYPE	semantic/sem.h	33;"	d
 MINUS	syntax.tab.c	/^     MINUS = 262,$/;"	e	enum:yytokentype	file:
 MINUS	syntax.tab.h	/^     MINUS = 262,$/;"	e	enum:yytokentype
 MUL	syntax.tab.c	/^     MUL = 263,$/;"	e	enum:yytokentype	file:
@@ -260,7 +262,8 @@ arc_type	semantic/sem.h	/^	Type* arc_type;		\/\/参数类型$/;"	m	struct:fun_li
 array	semantic/sem.h	/^		struct {Type* elem;int size;}array; \/\/数组类型$/;"	m	union:Type_::__anon3	typeref:struct:Type_::__anon3::__anon4
 basic	semantic/sem.h	/^		int basic;			\/\/基本类型 1:int; 2:float$/;"	m	union:Type_::__anon3
 child	util.h	/^	struct multi_tree **child;$/;"	m	struct:multi_tree	typeref:struct:multi_tree::multi_tree
-count_arc	semantic/sem.c	/^int count_arc(MultiTree* root)$/;"	f
+ck_lvalue	semantic/sem.c	/^int ck_lvalue(MultiTree *root)$/;"	f
+count_arc	semantic/sem.c	/^int count_arc(MultiTree* root, char * sign)$/;"	f
 elem	semantic/sem.h	/^		struct {Type* elem;int size;}array; \/\/数组类型$/;"	m	struct:Type_::__anon3::__anon4
 error	lex.yy.c	/^	int error = 0;$/;"	v
 flex_int16_t	lex.yy.c	/^typedef int16_t flex_int16_t;$/;"	t	file:
@@ -280,10 +283,13 @@ fun_list	semantic/sem.h	/^struct fun_list{$/;"	s
 func	semantic/sem.h	/^		FunList func;$/;"	m	union:hash_list::__anon5
 get_childnum	util.c	/^int get_childnum(MultiTree* node)$/;"	f
 get_funType	semantic/symbol.c	/^FunList* get_funType(HashList* hash_head,char *node_name)  $/;"	f
+get_structvar	semantic/sem.c	/^Type* get_structvar(Type* type, char* id)$/;"	f
 get_varType	semantic/symbol.c	/^VarList* get_varType(HashList* hash_head,char *node_name)		$/;"	f
 hash_cmp	semantic/symbol.c	/^int hash_cmp(HashList* a,HashList* b)$/;"	f
 hash_display	semantic/symbol.c	/^void hash_display(HashList* node)$/;"	f
 hash_func	semantic/symbol.c	/^unsigned int hash_func(char* name)$/;"	f
+hash_heap	semantic/sem.h	/^HashList hash_heap[MAX_TYPE];$/;"	v
+hash_heap_no	semantic/sem.h	/^int hash_heap_no;$/;"	v
 hash_list	semantic/sem.h	/^struct hash_list{$/;"	s
 hash_table	semantic/sem.h	/^HashList hash_table[HASH_SIZE];$/;"	v
 id	util.h	/^	char *id;$/;"	m	union:value
@@ -311,6 +317,7 @@ op	syntax.tab.h	/^	char *op;$/;"	m	union:YYSTYPE
 op	util.h	/^	char * op;$/;"	m	struct:multi_tree
 parse_compst	semantic/sem.c	/^void parse_compst(MultiTree* parent, MultiTree* root)$/;"	f
 parse_def	semantic/sem.c	/^void parse_def(Type* type,MultiTree* root)$/;"	f
+parse_exp	semantic/sem.c	/^void parse_exp(Type* type,MultiTree* root)$/;"	f
 parse_extdef	semantic/sem.c	/^void parse_extdef(Type* type,MultiTree* root)$/;"	f
 parse_fundec	semantic/sem.c	/^void parse_fundec(FunList* funlist,MultiTree* root)$/;"	f
 print_err	semantic/printerr.c	/^void print_err(int type,int lineno,char* err_msg)$/;"	f
@@ -329,6 +336,8 @@ textval	lex.yy.c	/^	union value textval;$/;"	v	typeref:union:value
 type	semantic/sem.h	/^	Type* type;		\/\/域的类型$/;"	m	struct:FieldList_
 type	semantic/sem.h	/^	Type* type;	$/;"	m	struct:var_list
 type	util.h	/^	int type;$/;"	m	struct:multi_tree
+type_heap	semantic/sem.h	/^Type type_heap[MAX_TYPE];$/;"	v
+type_heap_no	semantic/sem.h	/^int type_heap_no;$/;"	v
 typecmp	semantic/symbol.c	/^int typecmp(Type* type1, Type* type2)$/;"	f
 u	semantic/sem.h	/^	}u;$/;"	m	struct:Type_	typeref:union:Type_::__anon3
 unput	lex.yy.c	201;"	d	file:
@@ -336,14 +345,15 @@ val	util.h	/^	union  value val;$/;"	m	struct:multi_tree	typeref:union:multi_tree
 value	util.h	/^union value {$/;"	u
 var	semantic/sem.h	/^		VarList var;$/;"	m	union:hash_list::__anon5
 var_list	semantic/sem.h	/^struct var_list{$/;"	s
+walk_arg	semantic/sem.c	/^void walk_arg(char* func_name,int arc_num,Type* arc_type,MultiTree* root, char * sign)			\/\/有错就返回$/;"	f
 walk_dec	semantic/sem.c	/^void walk_dec(Type* type,MultiTree* root)$/;"	f
 walk_declist	semantic/sem.c	/^void walk_declist(Type* type,MultiTree* root)$/;"	f
-walk_deflist	semantic/sem.c	/^void walk_deflist(Type* type, MultiTree* root)$/;"	f
+walk_deflist	semantic/sem.c	/^void walk_deflist(MultiTree* root)$/;"	f
 walk_extdeclist	semantic/sem.c	/^void walk_extdeclist(Type* type,MultiTree* root)$/;"	f
 walk_funcvar	semantic/sem.c	/^void walk_funcvar(Type* type,MultiTree* root)$/;"	f
 walk_param	semantic/sem.c	/^void walk_param(FunList* funlist,int arc_num,MultiTree* root)$/;"	f
-walk_stmt	semantic/sem.c	/^void walk_stmt(Type* type, MultiTree* root)$/;"	f
-walk_stmtlist	semantic/sem.c	/^void walk_stmtlist(Type* type, MultiTree* root)$/;"	f
+walk_stmt	semantic/sem.c	/^void walk_stmt(MultiTree* root)$/;"	f
+walk_stmtlist	semantic/sem.c	/^void walk_stmtlist(MultiTree* root)$/;"	f
 walk_structdec	semantic/sem.c	/^void walk_structdec(Type* type, Type* fieldtype, MultiTree* root)$/;"	f
 walk_structdeclist	semantic/sem.c	/^void walk_structdeclist(Type* type, Type* fieldtype, MultiTree* root)$/;"	f
 walk_structdef	semantic/sem.c	/^void walk_structdef(Type* type, MultiTree* root)$/;"	f

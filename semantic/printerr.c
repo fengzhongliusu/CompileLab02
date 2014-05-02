@@ -56,13 +56,13 @@ void print_err(int type,int lineno,char* err_msg)
 			printf("mismatched arguments for function \"%s\"\n",err_msg);
 			break;
 		case 10:
-			printf("\"%s\" must be an array",err_msg);
+			printf("\"%s\" must be an array\n",err_msg);
 			break;
 		case 11:
 			printf("\"%s\" must be a function\n",err_msg);
 			break;
 		case 12:
-			printf("Operands type mistaken\n");
+			printf("array index is not integer\n");
 			break;
 		case 13:
 			printf("Illegal use of \"%s\"\n",err_msg);
@@ -74,7 +74,7 @@ void print_err(int type,int lineno,char* err_msg)
 			printf("Redefined field \"%s\"\n",err_msg);
 			break;
 		case 16:
-			printf("wront type of expression in \"%s\"\n",err_msg);
+			printf("wrong type of expression in \"%s\"\n",err_msg);
 			break;
 		case 17:
 			printf("no return statement in function \"%s\"\n",err_msg);

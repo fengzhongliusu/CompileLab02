@@ -49,9 +49,9 @@ int main(int argc,char** argv)
 	yyrestart(f);
 	//yydebug = 1;
 	yyparse();
-	if(error==0){
+	/*if(error==0){
 		walk_tree(root);
-	}
+	}*/
 
 	sem_analy(root);
 
@@ -61,19 +61,19 @@ int main(int argc,char** argv)
 	if(fun!=NULL){
 		node.func = *fun;
 		node.next = NULL;
-		hash_display(&node);
+		//hash_display(&node);
 	}
 
 	VarList* var = get_varType(hash_table,"a");
 	if(var!=NULL){
-		printf("a find!!!\n");
+		//printf("a find!!!\n");
 	}
 
 	VarList* var1 = get_varType(hash_table,"i");
 	if(var1!=NULL){
 		node.list_type = 0;
 		node.var = *var1;
-		hash_display(&node);
+		//hash_display(&node);
 	}
 
 

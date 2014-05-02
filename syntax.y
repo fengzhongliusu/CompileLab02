@@ -126,7 +126,7 @@ Stmt	:	Exp SEMI				{
 		|	IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE	{
 		$$ = newMultiTree(NULL, "Stmt", 3, NULL, $1->lineno, 5, $1, $2, $3, $4, $5);}
 		|	IF LP Exp RP Stmt ELSE Stmt		{
-		$$ = newMultiTree(NULL, "Stmt", 3, NULL, $1->lineno, 6, $1, $2, $3, $4, $5, $6);}
+		$$ = newMultiTree(NULL, "Stmt", 3, NULL, $1->lineno, 7, $1, $2, $3, $4, $5, $6, $7);}
 		|	WHILE LP Exp RP Stmt	{
 		$$ = newMultiTree(NULL, "Stmt", 3, NULL, $1->lineno, 5, $1, $2, $3, $4, $5);}
 		|	error SEMI				{}

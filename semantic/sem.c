@@ -70,7 +70,7 @@ void parse_extdef(Type* type,MultiTree* root)
 	}
 	else{	//结构体类型
 		//TODO
-		printf("func:extdef()---->goto struct process\n");
+		//printf("func:extdef()---->goto struct process\n");
 		structtype *structhead = (structtype *)malloc(sizeof(structtype));
 		type->u.structure = structhead;
 		memset(structhead, 0, sizeof(structtype));
@@ -108,7 +108,7 @@ void parse_extdef(Type* type,MultiTree* root)
 
 	else if(strcmp(root->child[1]->node_name,"FunDec")==0)
 	{		
-		printf("func:extdef()---->goto func process\n");
+		//printf("func:extdef()---->goto func process\n");
 		FunList* funlist = (FunList*)malloc(sizeof(FunList));
 		funlist->re_type = &type_heap[type_heap_no++];
 		memcpy(funlist->re_type, type, sizeof(Type));
@@ -118,7 +118,7 @@ void parse_extdef(Type* type,MultiTree* root)
 
 	else
 	{
-		printf("SEMI\n");
+		//printf("SEMI\n");
 	}
 	
 }
@@ -199,6 +199,11 @@ void walk_structdef(Type* type, MultiTree* root)
 	else{	//结构体类型
 		//TODO
 		type->kind = STRUCTURE;
+
+		structtype *structhead = (structtype *)malloc(sizeof(structtype));
+		fieldtype->u.structure = structhead;
+		memset(structhead, 0, sizeof(structtype));
+
 		if(get_childnum(spe_node->child[0]) <= 1)
 			fieldtype->u.structure->name = NULL;
 		else if(memcmp(spe_node->child[0]->child[1]->node_name, "OptTag", 6) == 0) {
@@ -312,6 +317,11 @@ void parse_def(Type* type,MultiTree* root)
 	else{	//结构体类型
 		//TODO
 		type->kind = STRUCTURE;
+		
+		structtype *structhead = (structtype *)malloc(sizeof(structtype));
+		type->u.structure = structhead;
+		memset(structhead, 0, sizeof(structtype));
+
 		if(get_childnum(spe_node->child[0]) <= 1)
 			type->u.structure->name = NULL;
 		else if(memcmp(spe_node->child[0]->child[1]->node_name, "OptTag", 6) == 0) {
@@ -336,7 +346,7 @@ void walk_declist(Type* type,MultiTree* root)
 	walk_dec(type,root->child[0]);
 	if(root->child[1]!=NULL)			//DecList-->Dec,DecList
 	{
-		printf("Func:walk_declist--->multi dec\n");
+		//printf("Func:walk_declist--->multi dec\n");
 		walk_declist(type,root->child[2]);
 	}
 }
@@ -354,12 +364,9 @@ void walk_dec(Type* type,MultiTree* root)
 	else			//定义时赋值
 	{
 		walk_vardec(type, root->child[0]);
-		//TODO 获得root->child[2]的类型并检查	
+		// 获得root->child[1]的类型并检查	
 		Type *tp = &type_heap[type_heap_no++];
 		parse_exp(tp, root->child[1]);
-		if(tp == NULL)
-			print_err(1, root->child[1]->lineno, root->child[1]->child[0]->val.id);
-
 
 		if(typecmp(type, tp) != 0)
 			print_err(5, root->child[1]->lineno, NULL); 
@@ -386,7 +393,8 @@ void parse_fundec(FunList* funlist,MultiTree* root)
 		free(funlist);					/***TODO:test****/
 		hash_node->next = NULL;
 		printf("func:funcdec()--->name:%s\n",hash_node->func.name);
-		add_hash(hash_table,hash_node);		//加入符号表
+		if(add_hash(hash_table,hash_node) != 0)		//加入符号表,可能重定义
+			print_err(4, root->child[0]->lineno, root->child[0]->val.id);
 	}
 	else					//有参数
 	{
@@ -419,7 +427,8 @@ void walk_varlist(FunList* funlist,MultiTree* root)		//TODO:test-同时两个函
 		{
 			printf("arc%d type: %d\n",i,hash_node.func.arc_type[i].kind);
 		}
-		add_hash(hash_table,&hash_node);		//加入符号表
+		if(add_hash(hash_table,&hash_node) != 0)		//加入符号表,可能重定义
+			print_err(4, root->child[0]->lineno, root->child[0]->val.id);
 	}
 	else
 	{
@@ -500,28 +509,33 @@ int count_arc(MultiTree* root, char * sign)
 
 
 /*************************************处理函数体*****************************************************/
-void walk_deflist(Type* type, MultiTree* root)
+void walk_deflist(MultiTree* root)
 {	
 	assert(root != NULL);
 	assert(get_childnum(root) >= 1);
+	Type* type = (Type*)malloc(sizeof(Type));
 	parse_def(type, root->child[0]);
 
 	if(get_childnum(root) > 1)
-		walk_deflist(type, root->child[1]);
+		walk_deflist(root->child[1]);
+
+	free(type);
 }
 
-void walk_stmtlist(Type* type, MultiTree* root)
+void walk_stmtlist(MultiTree* root)
 {
 	assert(root != NULL);
-	walk_stmt(type, root->child[0]);
+	walk_stmt(root->child[0]);
 	if(get_childnum(root) > 1)
-		walk_stmtlist(type, root->child[1]);
+		walk_stmtlist(root->child[1]);
 }
 
-void walk_stmt(Type* type, MultiTree* root)
+void walk_stmt(MultiTree* root)
 {
 	assert(root != NULL);
 	assert(get_childnum(root) >= 1);
+
+	Type* type = (Type*)malloc(sizeof(Type));
 
 	if(memcmp(root->child[0]->node_name, "Exp", 3) == 0)
 		parse_exp(type, root->child[0]);
@@ -545,20 +559,22 @@ void walk_stmt(Type* type, MultiTree* root)
 		if(type->kind == BASIC && type->u.basic == 1);
 		else 
 			print_err(16, root->child[2]->lineno, "if");	// exp是int型值
-		walk_stmt(type, root->child[4]);
+		walk_stmt(root->child[4]);
 
-		if(get_childnum(root) > 5)
-			walk_stmt(type, root);
+		if(get_childnum(root) == 7)
+			walk_stmt(root->child[6]);
 	}
 
-	else if(memcmp(root->child[0]->node_name, "while", 5) == 0)
+	else if(memcmp(root->child[0]->node_name, "WHILE", 5) == 0)
 	{
 		parse_exp(type, root->child[2]);
 		if(type->kind == BASIC && type->u.basic == 1);
 		else
 			print_err(16, root->child[2]->lineno, "while");		
-		walk_stmt(type, root->child[4]);
+		walk_stmt(root->child[4]);
 	}
+
+	free(type);
 }
 
 void parse_compst(MultiTree* parent, MultiTree* root)
@@ -566,20 +582,18 @@ void parse_compst(MultiTree* parent, MultiTree* root)
 	assert(root != NULL);
 	assert(get_childnum(root) >= 2);
 
-	Type* type = &type_heap[type_heap_no++];
-	
 	if(get_childnum(root) == 3)
 	{
 		if(memcmp(root->child[1]->node_name, "DefList", 7) == 0)
-			walk_deflist(type, root->child[1]);
+			walk_deflist(root->child[1]);
 		else if(memcmp(root->child[1]->node_name, "StmtList", 8) == 0)
-			walk_stmtlist(type, root->child[1]);
+			walk_stmtlist(root->child[1]);
 	}
 
 	else if(get_childnum(root) == 4)
 	{
-		walk_deflist(type, root->child[1]);
-		walk_stmtlist(type, root->child[2]);
+		walk_deflist(root->child[1]);
+		walk_stmtlist(root->child[2]);
 	}
 
 	if(memcmp(parent->node_name, "Stmt", 4) != 0)
@@ -610,8 +624,10 @@ void parse_exp(Type* type,MultiTree* root)
 			else{	//ID				
 				VarList* var = get_varType(hash_table,root->child[0]->val.id);
 				if(var == NULL) {
+					/*type = NULL, 在这里无效
+					 */
 					print_err(1, root->child[0]->lineno, root->child[0]->val.id);
-					type = NULL;
+					type->kind = -1;
 				}
 				else {
 					memcpy(type,var->type,sizeof(Type));
@@ -625,6 +641,10 @@ void parse_exp(Type* type,MultiTree* root)
 			}
 			else if(strcmp(root->child[0]->node_name,"Exp")==0){ //exp-->exp[exp]
 				parse_exp(type,root->child[0]);
+				if(type->kind != ARRAY)
+				{
+					print_err(10, root->child[0]->lineno, root->child[0]->node_name);
+				}
 				Type* sign_type = &type_heap[type_heap_no++];
 				parse_exp(sign_type,root->child[2]);
 				if(sign_type->kind != BASIC || sign_type->u.basic != 0)   //数组下表不是int
@@ -636,7 +656,10 @@ void parse_exp(Type* type,MultiTree* root)
 				FunList* fun = get_funType(hash_table,root->child[0]->val.id);  //获取函数返回类型
 				if(fun == NULL)   //未定义的函数						
 				{
-					print_err(2,root->child[0]->lineno,root->child[0]->val.id);   
+					if(get_varType(hash_table, root->child[0]->val.id) != NULL)
+						print_err(11, root->child[0]->lineno, root->child[0]->val.id);
+					else	
+						print_err(2,root->child[0]->lineno,root->child[0]->val.id);   
 				}
 				else
 				{
@@ -667,6 +690,7 @@ void parse_exp(Type* type,MultiTree* root)
 			if(typecmp(l_type,r_type)!=0)  //两个操作数类型不匹配 
 			{
 				print_err(7,root->child[0]->lineno,NULL);
+				type->kind = -1;
 			}
 		}
 
@@ -674,18 +698,21 @@ void parse_exp(Type* type,MultiTree* root)
 		{
 			parse_exp(l_type,root->child[0]);
 			parse_exp(r_type,root->child[1]);				
-			if(memcmp(root->op, "=", 1) == 0)
+			if(memcmp(root->op, "=", 1) == 0)	//不是左值
 			{
-				if(memcmp(root->child[0]->child[0]->node_name, "INT", 3) == 0 ||
-						memcmp(root->child[0]->child[0]->node_name, "FLOAT", 5) == 0)
+				if(ck_lvalue(root->child[0]) != 0)
+					print_err(6, root->child[0]->lineno, NULL);
+				type->kind = -1;
+			}	
+			else {
+				if(typecmp(l_type,r_type)!=0)  //两个操作数类型不匹配 
 				{
-					print_err(
-			if(typecmp(l_type,r_type)!=0)  //两个操作数类型不匹配 
-			{
-				print_err(7,root->child[0]->lineno,NULL);
-			}			
-			else{
-				memcpy(type,l_type,sizeof(Type));   
+					print_err(7,root->child[0]->lineno,NULL);
+					type->kind = -1;
+				}			
+				else{
+					memcpy(type,l_type,sizeof(Type));   
+				}
 			}
 		}
 
@@ -701,6 +728,7 @@ void parse_exp(Type* type,MultiTree* root)
 				if(typecmp(l_type,r_type)!=0)		
 				{
 				   print_err(7,root->child[0]->lineno,NULL);// 类型不匹配
+				   type->kind = -1;
 				}		
 				else
 				{
@@ -719,11 +747,13 @@ void parse_exp(Type* type,MultiTree* root)
 			assert(root->child[1]!=NULL);
 			parse_exp(l_type,root->child[0]);
 			if(l_type->kind != 2){
-				print_err(13,root->child[0]->lineno,root->op);	//.右边不是结构体
+				print_err(13,root->child[0]->lineno,root->op);	//.左边不是结构体
+				type->kind = -1;
 			}
 			else{
 				if(get_structvar(l_type,root->child[1]->val.id)==NULL){
 					print_err(14,root->child[1]->lineno,root->child[1]->val.id);    //结构体没有id
+					type->kind = -1;
 				}
 				else{
 					memcpy(type,get_structvar(l_type,root->child[1]->val.id),sizeof(Type));
@@ -748,13 +778,13 @@ void walk_arg(char* func_name,int arc_num,Type* arc_type,MultiTree* root, char *
 	//判断第一个参数是否相同
 	Type *type_1 = &type_heap[type_heap_no++];
 	parse_exp(type_1,root->child[0]);
-	if(type_1 != NULL)
-		print_err(1, root->lineno, root->child[0]->child[0]->val.id);	//TODO
-	else if(typecmp(&arc_type[num],type_1)!=0){
+	if(typecmp(&arc_type[num],type_1)!=0){
 		print_err(9,root->lineno,func_name);   // 函数参数错误
 	}
 
 	if(root->child[1]==NULL){
+		if(num != arc_num)
+			print_err(9, root->lineno, func_name);
 		return;
 	}
 	else{
@@ -764,7 +794,12 @@ void walk_arg(char* func_name,int arc_num,Type* arc_type,MultiTree* root, char *
 
 Type* get_structvar(Type* type, char* id)
 {
-	FieldList* fieldptr = type->u.structure->structure;
+	//从符号表取结构体类型
+	VarList	*var_in_table = get_varType(hash_table, type->u.structure->name);
+	Type* type_in_var = var_in_table->type;
+
+	FieldList* fieldptr = type_in_var->u.structure->structure;
+
 	for(; fieldptr != NULL; fieldptr = fieldptr->tail)
 	{
 		if(memcmp(fieldptr->name, id, strlen(id)) == 0)
@@ -772,3 +807,35 @@ Type* get_structvar(Type* type, char* id)
 	}
 	return NULL;
 }	
+
+int ck_lvalue(MultiTree *root)
+{
+	int chd_num = get_childnum(root);
+	if(chd_num == 1)
+	{
+		if(memcmp(root->child[0]->node_name, "ID", 2) == 0)
+			return 0;
+		else
+			return -1;
+	}	
+	else if(chd_num == 4 && memcmp(root->child[2]->node_name, "Exp", 3) == 0)
+	{
+		if((get_childnum(root->child[0]) == 1) && memcmp(
+					root->child[0]->child[0]->node_name, "ID", 2) == 0)
+			return 0;
+		else
+			return -1;
+	}
+	else if(chd_num == 2 && memcmp(root->op, ".", 1) == 0)
+	{
+		if((get_childnum(root->child[0]) == 1) && memcmp(
+					root->child[0]->child[0]->node_name, "ID", 2) == 0)
+			return 0;
+		else
+			return -1;
+	}
+
+
+	else 
+		return -1;
+}
