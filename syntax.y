@@ -151,7 +151,7 @@ DecList		:	Dec		{
 Dec		:	VarDec		{
 			$$ = newMultiTree(NULL, "Dec", 3, NULL, $1->lineno, 1, $1);}
 		|	VarDec ASSIGNOP Exp		{
-		$$ = newMultiTree(NULL, "Dec", 3, NULL, $1->lineno, 3, $1, $2, $3);}
+		$$ = newMultiTree($2, "Dec", 3, NULL, $1->lineno, 2, $1, $3);}
 		;
 
 Exp		:	Exp ASSIGNOP Exp	{
@@ -183,7 +183,7 @@ Exp		:	Exp ASSIGNOP Exp	{
 		|	Exp	LB Exp RB		{
 		$$ = newMultiTree(NULL, "Exp", 3, NULL, $1->lineno, 4, $1, $2, $3, $4);}
 		|	Exp	DOT ID			{
-		$$ = newMultiTree(NULL, "Exp", 3, NULL, $1->lineno, 3, $1, $2, $3);}
+		$$ = newMultiTree($2, "Exp", 3, NULL, $1->lineno, 2, $1, $3);}
 		|	ID					{
 		$$ = newMultiTree(NULL, "Exp", 3, NULL, $1->lineno, 1, $1);}
 		|	INT					{

@@ -139,7 +139,7 @@ void walk_dec(Type* ,MultiTree* );
 
 void parse_exp(Type* , MultiTree* );
 
-void walk_arg(char*,int,Type*,MultiTree*);
+void walk_arg(char*,int,Type*,MultiTree*, char *);
 
 void parse_compst(MultiTree* , MultiTree* );
 
@@ -160,7 +160,7 @@ void walk_param(FunList* ,int ,MultiTree* );
 
 void walk_funcvar(Type* ,MultiTree* );
 
-int count_arc(MultiTree *);
+int count_arc(MultiTree *, char *);
 
 /******************处理定义结构体********************/
 void walk_structdeflist(Type *, MultiTree *);

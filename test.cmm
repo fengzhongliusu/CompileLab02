@@ -5,9 +5,18 @@ struct s {
 	float b[2][3][4] = 15;
 };
 
+int bufdo(int i, int j, struct s k)
+{
+}
+
+
 float main(float a,int b,float c)
 {
 	int i;
-	float e;
-	return e;
+	float e = 1;
+	int k = e + 1;
+	int s[5];
+	j = i + 1;
+	return i;
+
 }

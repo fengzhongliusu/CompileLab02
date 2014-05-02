@@ -81,6 +81,6 @@ int main(int argc,char** argv)
 	hash_heap_no = 0;
 	type_heap_no = 0;
 
-	return 0;
+	exit(0);
 }
 

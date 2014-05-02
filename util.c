@@ -51,6 +51,7 @@ MultiTree *newMultiTree(char *op, char *node_name, int type, union value* val, i
 			if(node == NULL){
 				continue;
 			}
+			assert(node->node_name != NULL);
 			root_node->child[count] = node;
 			count++;
 		}
@@ -65,6 +66,7 @@ void walk_tree(MultiTree* root)
 	int i;
 	static int k  = 1;
 	printf("%*c",k,' ');
+	assert(root->node_name != NULL);
 	if(root!=NULL){
 		printf("%s",root->node_name);
 	}
@@ -86,7 +88,7 @@ void walk_tree(MultiTree* root)
 			}
 		}
 		else{
-			printf("root->child %x\n", (int)root->child);
+			printf("root->child %d\n", (int)root->child);
 			if(get_childnum(root)==1){
 				printf("%*c",k,' ');
 				printf("%s\n",root->op);

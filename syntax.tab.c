@@ -1855,7 +1855,7 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 153 "syntax.y"
     {
-		(yyval.node) = newMultiTree(NULL, "Dec", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].op), (yyvsp[(3) - (3)].node));}
+		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Dec", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
 
   case 44:
@@ -1975,7 +1975,7 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 185 "syntax.y"
     {
-		(yyval.node) = newMultiTree(NULL, "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 3, (yyvsp[(1) - (3)].node), (yyvsp[(2) - (3)].op), (yyvsp[(3) - (3)].node));}
+		(yyval.node) = newMultiTree((yyvsp[(2) - (3)].op), "Exp", 3, NULL, (yyvsp[(1) - (3)].node)->lineno, 2, (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node));}
     break;
 
   case 59:

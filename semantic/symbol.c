@@ -127,7 +127,10 @@ int hash_cmp(HashList* a,HashList* b)
 {
 	if(a->list_type == b->list_type){
 		if(a->list_type == 0){   //a,b:var
-			return strcmp(a->var.name,b->var.name)==0?0:-1;
+			if(a->var.name == NULL)
+				return strcmp(a->var.type->u.structure->name,b->var.name)==0?0:-1;
+			else
+				return strcmp(a->var.name,b->var.name)==0?0:-1;
 		}
 		else{
 			return strcmp(a->func.name,b->func.name)==0?0:-1;
@@ -223,7 +226,9 @@ unsigned int hash_func(char* name)
 //比较type是否相同
 int typecmp(Type* type1, Type* type2)
 {
-	assert(type1 != NULL && type2 != NULL);
+	//assert(type1 != NULL && type2 != NULL);
+	if(type1 == NULL || type2 == NULL)
+		return -1;
 
 	if(type1->kind != type2->kind)
 		return -1;
