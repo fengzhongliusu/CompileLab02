@@ -70,11 +70,10 @@ int main(int argc,char** argv)
 		//printf("a find!!!\n");
 	}
 
-	VarList* var1 = get_varType(hash_table,"i");
+	VarList* var1 = get_varType(hash_table,"struct_s");
 	if(var1!=NULL){
 		node.list_type = 0;
 		node.var = *var1;
-		//hash_display(&node);
 	}
 
 

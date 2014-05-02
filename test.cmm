@@ -7,51 +7,17 @@ struct s {
 
 int bufdo(int i, int j, struct s k)
 {
+	int j;
+	return j;
 }
-
-struct s {
-	int c;
-	float d;
-};
-
-struct s bufdo()
-{
-	return a[3];
-}
-
 
 float main(float a,int b,float c)
 {
 	int i;
-	float e = 1;
-	float nojoke = 1.5;
+	int j;
+	float k;
 	struct s struct_s;
-	int k = e + 1;
-	int s[5];
-	int ss[5];
-	int fs[6];
-	1 = e + 2;
-	(ss+1)[0] = i;
-	bf();
-	ss = fs;
-	ss = s + 1;
 	j = i + 1;
 	bufdo(i,i,struct_s);
-	bufdo(i);
-	i[nojoke] = 1;
-	i(5);
-	struct_s.a = 1;
-	q.a = 1;
-	struct_s.f = 2;
-	if(fff == 1) {
-		aa;
-	}
-	else {
-		bb;
-	}
-	while(ggg = 1) {
-		cc;
-	}
 	return k;
-
 }
