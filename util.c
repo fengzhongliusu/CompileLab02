@@ -7,10 +7,6 @@ extern int error;
 
 MultiTree *newMultiTree(char *op, char *node_name, int type, union value* val, int lineno, int num, ...)
 {
-	/*if(error > 0){
-	  printf("%s error arise!!,return\n",node_name);
-	  return NULL;
-	  }*/
 	int i;
 	int count =0;
 	va_list al;
@@ -88,7 +84,6 @@ void walk_tree(MultiTree* root)
 			}
 		}
 		else{
-			printf("root->child %d\n", (int)root->child);
 			if(get_childnum(root)==1){
 				printf("%*c",k,' ');
 				printf("%s\n",root->op);

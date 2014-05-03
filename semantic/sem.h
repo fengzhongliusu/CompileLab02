@@ -116,12 +116,15 @@ void print_err(int,int,char*);
 /*语义分析模块***/
 /****************/
 
+//整体语义分析
 void sem_analy(MultiTree* );
 
+//全局变量，结构体，函数定义
 void parse_extdef(Type* ,MultiTree* );
+
 /***********全局变量的定义***************************/
 
-void walk_extdeclist(Type* ,MultiTree* );
+void walk_extdeclist(Type* ,MultiTree* );  
 
 void walk_vardec(Type* ,MultiTree* );
 
@@ -181,8 +184,8 @@ Type* get_structvar(Type*,char*);   //type of variable in a structure
 
 
 int hash_heap_no;
-HashList hash_heap[MAX_TYPE];
+HashList hash_heap[MAX_TYPE];		//用于申请hash节点空间的堆
 int type_heap_no;
-Type type_heap[MAX_TYPE];
+Type type_heap[MAX_TYPE];			//用于申请Type类型空间的堆
 
 #endif

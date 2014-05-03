@@ -22,6 +22,9 @@ struct s bufdo()
 	return a[3];
 }
 
+int func()
+{
+}
 
 float main(float a,int b,float c)
 {
@@ -40,7 +43,9 @@ float main(float a,int b,float c)
 	ss = s + 1;
 	j = i + 1;
 	bufdo(i,i,struct_s);
+	bufdo(i,e,struct_s);
 	bufdo(i);
+	bufdo(i,j,struct_s,j);
 	i[nojoke] = 1;
 	i(5);
 	struct_s.a = 1;

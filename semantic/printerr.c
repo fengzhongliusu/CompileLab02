@@ -53,7 +53,7 @@ void print_err(int type,int lineno,char* err_msg)
 			printf("The return type mismatched\n");
 			break;
 		case 9:
-			printf("mismatched arguments for function \"%s\"\n",err_msg);
+			printf("mismatched arguments: \"%s\"\n",err_msg);
 			break;
 		case 10:
 			printf("variable is not an array\n");
@@ -84,6 +84,12 @@ void print_err(int type,int lineno,char* err_msg)
 			break;
 		case 19:
 			printf("cannot do assignment in struct\n");
+			break;
+		case 20:
+			printf("too few arguments for func \"%s\"\n",err_msg);
+			break;
+		case 21:
+			printf("too many arguments for func \"%s\"\n",err_msg);
 			break;
 		default: 
 			printf("wrong error type!!\n");
