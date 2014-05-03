@@ -17,6 +17,8 @@ float main(float a,int b,float c)
 	int j;
 	float k;
 	struct s struct_s;
+	k = i + j;
+	i = -k;
 	j = i + 1;
 	bufdo(i,i,struct_s);
 	return k;

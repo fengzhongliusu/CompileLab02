@@ -244,6 +244,8 @@ int typecmp(Type* type1, Type* type2)
 	//assert(type1 != NULL && type2 != NULL);
 	if(type1 == NULL || type2 == NULL)
 		return -1;
+	if(type1->kind == -1 || type2->kind == -1)
+		return -1;
 
 	if(type1->kind != type2->kind)
 		return -1;

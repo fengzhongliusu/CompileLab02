@@ -703,20 +703,18 @@ void parse_exp(Type* type,MultiTree* root)
 					print_err(6, root->child[0]->lineno, NULL);
 				type->kind = -1;
 			}	
-			else {
-				if(typecmp(l_type,r_type)!=0)  //两个操作数类型不匹配 
-				{
-					print_err(7,root->child[0]->lineno,NULL);
-					type->kind = -1;
-				}			
-				else{
-					memcpy(type,l_type,sizeof(Type));   
-				}
+			if(typecmp(l_type,r_type)!=0)  //两个操作数类型不匹配 
+			{
+				print_err(7,root->child[0]->lineno,NULL);
+				type->kind = -1;
+			}			
+			else{
+				memcpy(type,l_type,sizeof(Type));   
 			}
 		}
 
 		else if(strcmp(root->op,"-")==0)
-		{   //可能有一个或两个操作数字
+		{   //可能有一个或两个操作数
 			if(root->child[1]==NULL){
 				parse_exp(type,root->child[0]);
 			}
