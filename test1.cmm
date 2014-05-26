@@ -1,8 +1,0 @@
-int main()
-{	
-	struct student stu1;
-	int a[2][2];
-	int i;	
-	int j;
-	return 0;
-}

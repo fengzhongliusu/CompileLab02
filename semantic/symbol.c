@@ -31,7 +31,6 @@ int add_hash(HashList* hash_head,HashList* hash_node)
 		hash_no = hash_func(hash_node->var.type->u.structure->name);
 	else if(hash_node->list_type == 0){		//变量
 		hash_no = hash_func(hash_node->var.name);
-		//printf("Func:add_hash()--->hash num is :%d\n",hash_no);
 	}
 	else{								//函数
 		hash_no = hash_func(hash_node->func.name);
@@ -43,18 +42,15 @@ int add_hash(HashList* hash_head,HashList* hash_node)
 	}
 	else{
 		if(hash_cmp(&hash_head[hash_no],hash_node)==0){   //已存在相同名称变量或函数
-			//printf("Func:add_hash()--->alread exits\n");
 			return -1;
 		}
 		else{											//open hashing,哈希值相同的插入链出链表
-			//printf("Func:add_hash()--->open hashing\n");
 			HashList* temp = (HashList*)malloc(sizeof(HashList));
 			*temp = *hash_node;
 			hash_head[hash_no].next = temp;
 			assert(hash_head[hash_no].next!=NULL);
 		}
 	}
-	//printf("Func:add_hash()--->insert success!!\n");
 	return 0;
 }
 
@@ -68,7 +64,6 @@ VarList* get_varType(HashList* hash_head,char *node_name)
 	hash_no = hash_func(node_name);
 
 	if(hash_head[hash_no].list_type == -1){   //哈希槽为空
-		//printf("Func:get_varType()---->no such variable!\n");
 		return NULL;
 	}
 	else{
@@ -78,7 +73,6 @@ VarList* get_varType(HashList* hash_head,char *node_name)
 		}
 		else{
 			for(temp = &hash_head[hash_no];temp!=NULL;temp = temp->next){
-				//printf("Func:get_varType()---->in find\n");
 				if(temp->var.name == NULL){					
 					if(strcmp(temp->var.type->u.structure->name,node_name)==0){
 						return &(temp->var);
@@ -243,6 +237,8 @@ int typecmp(Type* type1, Type* type2)
 {
 	//assert(type1 != NULL && type2 != NULL);
 	if(type1 == NULL || type2 == NULL)
+		return -1;
+	if(type1->kind == -1 || type2->kind == -1)
 		return -1;
 
 	if(type1->kind != type2->kind)

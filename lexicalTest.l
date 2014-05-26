@@ -11,7 +11,7 @@
 
 intNum		[0-9]+
 floatNum	[0-9]+\.[0-9]+
-type	int|float|char
+type	int|float
 id		[_a-zA-Z][_a-zA-Z0-9]*
 relopt	>|<|>=|<=|==|!=
 newline	\n

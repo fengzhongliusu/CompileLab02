@@ -13,6 +13,7 @@
 	char *op;
 }
 
+%expect 2
 
 %token	<node>	INT FLOAT ID
 %token	<op>	PLUS MINUS MUL DIV
@@ -141,6 +142,7 @@ DefList    :	/*empty*/	{
 
 Def		:		Specifier DecList SEMI {
 			$$ = newMultiTree(NULL, "Def", 3, NULL, $1->lineno, 3, $1, $2, $3);}
+		|		error SEMI {}
 		;
 
 DecList		:	Dec		{
