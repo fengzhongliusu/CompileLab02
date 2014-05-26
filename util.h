@@ -48,5 +48,18 @@ void walk_tree(MultiTree *);
 /*删除节点*/
 void tree_free(MultiTree *);
 
+
+typedef struct A_node_ *A_node;
+
+struct A_node_
+{
+	enum {A_intNum, A_floatNum, A_id, A_nonLeaf} kind;
+	union {struct {int value; int lineno} int_leaf;
+		   struct {float value; int lineno} float_leaf;
+		   struct {char* id; int lineno} id_leaf;
+		   struct {char* op; int lineno; char* id; int child_num; A_node* child; A_node sibling;} non_leaf;
+	} u;
+};
+
 /**/
 #endif
