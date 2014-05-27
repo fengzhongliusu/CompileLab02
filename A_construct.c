@@ -27,7 +27,7 @@ A_node A_extractExtdeflist(MultiTree* extdeflist)
 
 	A_node extdef;
 	A_extdef(&extdef, extdeflist->child[0]);
-	extdef->sibling = A_extractExtdef(extdeflist->child[1]);
+	extdef->u.non_leaf.sibling = A_extractExtdef(extdeflist->child[1]);
 	return extdef;
 }
 
@@ -38,6 +38,7 @@ void A_extdef(A_node* extdef_a, MultiTree* extdef_b)
 	*extdef_a->u.non_leaf.op = extdef_b->op;
 	*extdef_a->u.non_leaf.lineno = extdef_b->lineno;
 	*extdef_a->u.non_leaf.id = "extdef";
+	*extdef_a->u.non_leaf.sibling = NULL;
 	int child_num = get_childnum(extdef_b);
 
 	if(child_num == 2)
@@ -76,7 +77,7 @@ A_node A_extractExtdeclist(MultiTree* extdeclist)
 	if(child_num == 3)
 		vardec->u.non_leaf.sibling = A_extractExtdeclist(extdeclist->child[2]);
 
-	return *vardec;
+	return vardec;
 }
 
 void A_fundec(A_node* fundec_a, MultiTree* fundec_b)
@@ -88,6 +89,7 @@ void A_fundec(A_node* fundec_a, MultiTree* fundec_b)
 	*fundec_a->u.non_leaf.op = NULL;
 	*fundec_a->u.non_leaf.lineno = fundec_b->lineno;
 	*fundec_a->u.non_leaf.id = "fundec";
+	*fundec_a->u.non_leaf.sibling = NULL;
 	
 	if(child_num == 3)
 	{
@@ -111,6 +113,7 @@ void A_compst(A_node* compst_a, MultiTree* compst_b)
 	*compst_a->u.non_leaf.op = NULL;
 	*compst_a->u.non_leaf.lineno = compst_b->lineno;
 	*compst_a->u.non_leaf.id = "compst";
+	*compst_a->u.non_leaf.sibling = NULL;
 	*compst_a->u.non_leaf.child_num = 2;
 	*compst_a->u.non_leaf.child = (A_node*)malloc(2 * A_node);
 	*compst_a->u.non_leaf.child[0] = A_extractDeflist(compst_b->child[1]);
@@ -124,6 +127,7 @@ void A_specifier(A_node* specifier_a, MultiTree* specifier_b)
 	*specifier_a->u.non_leaf.op = NULL;
 	*specifier_a->u.non_leaf.lineno = specifier_b->lineno;
 	*specifier_a->u.non_leaf.id = "specifier";
+	*specifier_a->u.non_leaf.sibling = NULL;
 	*specifier_a->u.non_leaf.child_num = 1;
 	*specifier_a->u.non_leaf.child = (A_node*)malloc(A_node);
 
@@ -201,6 +205,7 @@ void A_structspecifier(A_node* structspecifier_a, MultiTree* structspecifier_b)
 	*structspecifier_a->u.non_leaf.op = NULL;
 	*structspecifier_a->u.non_leaf.lineno = structspecifier_b->lineno;
 	*structspecifier_a->u.non_leaf.id = "structspecifier";
+	*structspecifier_a->u.non_leaf.sibling = NULL;
 
 	int child_num = get_childnum(structspecifier_b);
 	if(child_num == 2) 
@@ -233,12 +238,231 @@ void A_paramdec(A_node* paramdec_a, MultiTree* paramdec_b)
 	*paramdec_a->u.non_leaf.op = NULL;
 	*paramdec_a->u.non_leaf.lineno = paramdec_b->lineno;
 	*paramdec_a->u.non_leaf.id = "paramdec";
+	*paramdec_a->u.non_leaf.sibling = NULL;
 	*paramdec_a->u.non_leaf.child_num = 2;
 	*paramdec_a->u.non_leaf.child = (A_node*)malloc(2 * A_node);
 
 	A_specifier(&(*paramdec_a->u.non_leaf.child[0]), paramdec_b->child[0]);
 	*paramdec_a->u.non_leaf.child[1] = A_extractVardec(parmadec_b->child[1]);
 }
+
+void A_def(A_node* def_a, MultiTree* def_b)
+{
+	*def_a = (A_node)malloc(*A_node);
+	*def_a->kind = A_nonLeaf;
+	*def_a->u.non_leaf.op = NULL;
+	*def_a->u.non_leaf.lineno = def_b->lineno;
+	*def_a->u.non_leaf.id = "def";
+	*def_a->u.non_leaf.sibling = NULL;
+	*def_a->u.non_leaf.child_num = 2;
+	*def_a->u.non_leaf.child = (A_node*)malloc(*def_a->u.non_leaf.child_num * A_node);
+	A_specifier(&(*def_a->u.non_leaf.child[0]), def_b->child[0]);
+	*def_a->u.non_leaf.child[1] = A_extractDeclist(def_b->child[1]);
+}
+
+
+void A_stmt(A_node* stmt_a, MultiTree* stmt_b)
+{
+	*stmt_a = (A_node)malloc(*A_node);
+	*stmt_a->kind = A_nonLeaf;
+	*stmt_a->u.non_leaf.op = NULL;
+	*stmt_a->u.non_leaf.lineno = stmt_b->lineno;
+	*stmt_a->u.non_leaf.id = "stmt";
+	*stmt_a->u.non_leaf.sibling = NULL;
+	int child_num = get_childnum(stmt_b);
+
+	if(child_num == 1)
+	{
+		*stmt_a->u.non_leaf.child_num = 1;
+		*stmt_a->u.non_leaf.child = (A_node*)malloc(*stmt_a->u.non_leaf.child_num * A_node);
+		A_compst(&(*stmt_a->u.non_leaf.child[0]), stmt_b->child[0]);
+	}
+	else if(child_num == 2)
+	{
+		*stmt_a->u.non_leaf.child_num = 1;
+		*stmt_a->u.non_leaf.child = (A_node*)malloc(*stmt_a->u.non_leaf.child_num * A_node);
+		A_exp(&(*stmt_a->u.non_leaf.child[0]), stmt_b->child[0]);
+	}
+	else if(child_num == 3)
+	{
+		*stmt_a->u.non_leaf.child_num = 2;
+		*stmt_a->u.non_leaf.child = (A_node*)malloc(*stmt_a->u.non_leaf.child_num * A_node);
+		A_string(&(*stmt_a->u.non_leaf.child[0]), "return");
+		A_exp(&(*stmt_a->u.non_leaf.child[1]), stmt_b->child[1]);
+	}
+	else if(child_num == 5)
+	{
+		*stmt_a->u.non_leaf.child_num = 3;
+		*stmt_a->u.non_leaf.child = (A_node*)malloc(*stmt_a->u.non_leaf.child_num * A_node);
+		if(memcmp(stmt_b->child[0]->node_name, "WHILE", 5) == 0)
+			A_string(&(*stmt_a->u.non_leaf.child[0]), "while");
+		else
+			A_string(&(*stmt_a->u.non_leaf.child[0]), "if");
+		A_exp(&(*stmt_a->u.non_leaf.child[1]), stmt_b->child[2]);
+		A_stmt(&(*stmt_a->u.non_leaf.child[2]), stmt_b->child[4]);
+	}
+	else
+	{
+		*stmt_a->u.non_leaf.child_num = 5;
+		*stmt_a->u.non_leaf.child = (A_node*)malloc(*stmt_a->u.non_leaf.child_num * A_node);
+		A_string(&(*stmt_a->u.non_leaf.child[0]), "if");
+		A_exp(&(*stmt_a->u.non_leaf.child[1]), stmt_b->child[2]);
+		A_stmt(&(*stmt_a->u.non_leaf.child[2]), stmt_b->child[4]);
+		A_string(&(*stmt_a->u.non_leaf.child[3]), "else");
+		A_stmt(&(*stmt_a->u.non_leaf.child[4]), stmt_b->child[6]);
+	}
+}
+
+void A_tag(A_node* tag_a, MultiTree* tag_b)
+{
+	*tag_a = (A_node)malloc(*A_node);
+	*tag_a->kind = A_nonLeaf;
+	*tag_a->u.non_leaf.op = NULL;
+	*tag_a->u.non_leaf.lineno = tag_b->lineno;
+	*tag_a->u.non_leaf.id = "tag";
+	*tag_a->u.non_leaf.sibling = NULL;
+	*tag_a->u.non_leaf.child_num = 1;
+	*tag_a->u.non_leaf.child = (A_node*)malloc(*tag_a->u.non_leaf.child_num * A_node);
+	A_id(&(*tag_a->u.non_leaf.child[0]), tag_b->child[0]);
+}
+
+void A_opttag(A_node* optopttag_a, MultiTree* optopttag_b)
+{
+	*opttag_a = (A_node)malloc(*A_node);
+	*opttag_a->kind = A_nonLeaf;
+	*opttag_a->u.non_leaf.op = NULL;
+	*opttag_a->u.non_leaf.lineno = opttag_b->lineno;
+	*opttag_a->u.non_leaf.id = "opttag";
+	*opttag_a->u.non_leaf.sibling = NULL;
+	*opttag_a->u.non_leaf.child_num = 1;
+	*opttag_a->u.non_leaf.child = (A_node*)malloc(*opttag_a->u.non_leaf.child_num * A_node);
+	A_id(&(*opttag_a->u.non_leaf.child[0]), opttag_b->child[0]);
+}
+
+A_node A_extractDeclist(MultiTree* declist)
+{
+	A_node dec;
+	int child_num = get_childnum(declist);
+	A_dec(&dec, declist->child[0]);
+
+	if(child_num == 3)
+		dec->u.non_leaf.sibling = A_extractDeclist(declist->child[2]);
+
+	return dec;
+}
+
+void a_exp(A_node* exp_a, MultiTree* exp_b)
+{
+	*exp_a = (A_node)malloc(*A_node);
+	*exp_a->kind = A_nonLeaf;
+	*exp_a->u.non_leaf.op = exp_b->op;
+	*exp_a->u.non_leaf.lineno = exp_b->lineno;
+	*exp_a->u.non_leaf.id = "exp";
+	*exp_a->u.non_leaf.sibling = NULL;
+	int child_num = get_childnum(exp_b);
+
+	if(child_num == 1)
+	{
+		*exp_a->u.non_leaf.child_num =  child_num;
+		*exp_a->u.non_leaf.child = (A_node*)malloc(*exp_a->u.non_leaf.child_num * A_node);
+		if(memcmp(exp_b->child[0]->node_name, "ID", 2) == 0)
+			A_id(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+		else if(memcmp(exp_b->child[0]->node_name, "INT", 3) == 0)
+			A_intNum(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+		else
+			A_floatNum(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+	}
+	else if(child_num == 2)
+	{
+		*exp_a->u.non_leaf.child_num = 1;	//单目操作符
+		*exp_a->u.non_leaf.child = (A_node*)malloc(*exp_a->u.non_leaf.child_num * A_node);
+		A_exp(&(*exp_a->u.non_leaf.child[0]), exp_b->child[1]);
+	}
+	else if(child_num == 3)
+	{
+		if(*exp_a->u.non_leaf.op != NULL)
+		{
+			*exp_a->u.non_leaf.child_num = 2;
+			*exp_a->u.non_leaf.child = (A_node*)malloc(*exp_a->u.non_leaf.child_num * A_node);
+			if(memcmp(exp_b->child[1]->op, "DOT", 3) != 0)
+			{
+				A_exp(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+				A_exp(&(*exp_a->u.non_leaf.child[1]), exp_b->child[2]);
+			}
+			else
+			{
+				A_exp(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+				A_id(&(*exp_a->u.non_leaf.child[1]), exp_b->child[2]);
+			}
+		}
+		else {
+			*exp_a->u.non_leaf.child_num = 1;
+			*exp_a->u.non_leaf.child = (A_node*)malloc(*exp_a->u.non_leaf.child_num * A_node);
+			if(memcmp(exp_b->child[0]->node_name, "ID", 2) == 0)
+			{
+				*exp_a->u.non_leaf.op = "()";
+				A_id(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+			}
+			else
+				A_exp(&(*exp_a->u.non_leaf.child[0]), exp_b->child[1]);
+		}
+	}
+	else
+	{
+		*exp_a->u.non_leaf.child_num = 2;
+		*exp_a->u.non_leaf.child = (A_node*)malloc(*exp_a->u.non_leaf.child_num * A_node);
+		if(memcmp(exp_b->child[0]->node_name, "ID", 2) == 0)
+		{
+			*exp_a->u.non_leaf.op = "()";
+			A_id(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+			exp_a->u.non_leaf.child[1] = A_extractArgs(exp_b->child[2]);
+		}
+		else
+		{
+			*exp_a->u.non_leaf.op = "[]";
+			A_exp(&(*exp_a->u.non_leaf.child[0]), exp_b->child[0]);
+			A_exp(&(*exp_a->u.non_leaf.child[1]), exp_b->child[2]);
+		}
+	}
+}
+
+void A_string(A_node* string_a, char* string_b)
+{
+	*string_a = (A_node)malloc(*A_node);
+	*string_a->kind = A_string;
+	*stirng_a->u.string_leaf.string = string_b;
+}
+
+void A_floatNum(A_node* floatNum_a, MultiTree* floatNum_b)
+{
+	*floatNum_a = (A_node)malloc(*A_node);
+	*floatNum_a->kind = A_floatNum;
+	*floatNum_a->u.int_leaf.value = floatNum_b->val.floatNum;
+	*floatNum_a->u.int_leaf.lineno = floatNum_b->lineno;
+}
+
+A_node A_extractArgs(MultiTree* args)
+{
+	A_node exp;
+	A_exp(&exp, args->child[0]);
+	int child_num = get_childnum(args);
+	
+	if(child_num == 3)
+		exp->u.non_leaf.sibling = A_extractArgs(args->child[2]);
+
+	return exp;
+}
+
+
+
+
+
+
+
+	
+
+
+
 
 
 
