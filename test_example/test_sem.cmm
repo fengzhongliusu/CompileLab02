@@ -1,7 +1,7 @@
 struct s {
 	int a;
 	float b;
-	int c[2][3]
+	int c[2][3];
 	float b[2][3][4] = 15;
 };
 
@@ -14,7 +14,7 @@ int bufdo(int i, int j, struct s k)
 
 struct s {
 	int c;
-	float d
+	float d;
 };
 
 struct s bufdo()

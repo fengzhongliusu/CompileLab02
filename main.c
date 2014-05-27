@@ -25,6 +25,7 @@
 extern int error;
 extern MultiTree* root;
 extern int yydebug;
+A_node pg;
 
 int main(int argc,char** argv)
 {
@@ -54,6 +55,8 @@ int main(int argc,char** argv)
 	}
 
 	walk_tree(root);
+	pg = A_Build(root);
+	A_print(pg);
 	sem_analy(root);
 
 	FunList* fun = get_funType(hash_table,"main");

@@ -103,6 +103,8 @@ void walk_tree(MultiTree* root)
 
 int get_childnum(MultiTree* node)
 {	
+	if(node == NULL)
+		return 0;
 	int i;
 	for(i=0;node->child[i]!=NULL;i++);
 	return i;

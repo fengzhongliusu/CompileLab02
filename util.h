@@ -49,67 +49,68 @@ void walk_tree(MultiTree *);
 void tree_free(MultiTree *);
 
 
-typedef struct A_node_ *A_node;
+typedef struct A_node_* A_node;
 
 struct A_node_
 {
-	enum {A_intNum, A_floatNum, A_id, A_nonLeaf, A_string} kind;
+	enum {A_intNum, A_floatNum, A_id, A_type, A_nonLeaf, A_string, A_param, A_exp, A_struct, A_dim} kind;
 	union {struct {int value; int lineno;} int_leaf;
 		   struct {float value; int lineno;} float_leaf;
 		   struct {char* id; int lineno;} id_leaf;
 		   struct {char* op; int lineno; char* id; int child_num; A_node* child; A_node sibling;} non_leaf;
 		   struct {char* string;} string_leaf;
+		   struct {int value; A_node sibling;} dim;
 	} u;
 };
 
 
-A_node A_build(MultiTree* root);
+A_node A_Build(MultiTree* root);
 
-A_node A_extractExtdeflist(MultiTree* extdeflist);
+A_node A_ExtractExtdeflist(MultiTree* extdeflist);
 
-void A_extdef(A_node* extdef_a, MultiTree* extdef_b);
+void A_Extdef(A_node* extdef_a, MultiTree* extdef_b);
 
-A_node A_extractExtdeclist(MultiTree* extdeclist);
+A_node A_ExtractExtdeclist(MultiTree* extdeclist);
 
-void A_fundec(A_node* fundec_a, MultiTree* fundec_b);
+void A_Fundec(A_node* fundec_a, MultiTree* fundec_b);
 
-void A_compst(A_node* compst_a, MultiTree* compst_b);
+void A_Compst(A_node* compst_a, MultiTree* compst_b);
 
-void A_specifier(A_node* specifier_a, MultiTree* specifier_b);
+void A_Specifier(A_node* specifier_a, MultiTree* specifier_b);
 
-A_node A_extractVardec(MultiTree* vardec);
+A_node A_ExtractVardec(MultiTree* vardec);
 
-void A_id(A_node* id_a, MultiTree* id_b);
+void A_Dim(A_node* dim_a, MultiTree* dim_b);
 
-A_node A_extractVarlist(MultiTree* varlist);
+void A_Id(A_node* id_a, MultiTree* id_b);
 
-A_node A_extractDeflist(MultiTree* deflist);
+A_node A_ExtractVarlist(MultiTree* varlist);
 
-A_node A_extractStmtlist(MultiTree* stmtlist);
+A_node A_ExtractDeflist(MultiTree* deflist);
 
-void A_structspecifier(A_node* structspecifier_a, MultiTree* structspecifier_b);
+A_node A_ExtractStmtlist(MultiTree* stmtlist);
 
-void A_intNum(A_node* intNum_a, MultiTree* intNum_b);
+void A_Structspecifier(A_node* structspecifier_a, MultiTree* structspecifier_b);
 
-void A_paramdec(A_node* paramdec_a, MultiTree* paramdec_b);
+void A_IntNum(A_node* intNum_a, MultiTree* intNum_b);
 
-void A_def(A_node* def_a, MultiTree* def_b);
+void A_Paramdec(A_node* paramdec_a, MultiTree* paramdec_b);
 
-void A_stmt(A_node* stmt_a, MultiTree* stmt_b);
+void A_Def(A_node* def_a, MultiTree* def_b);
 
-void A_tag(A_node* tag_a, MultiTree* tag_b);
+void A_Stmt(A_node* stmt_a, MultiTree* stmt_b);
 
-void A_opttag(A_node* optopttag_a, MultiTree* optopttag_b);
+A_node A_ExtractDeclist(MultiTree* declist);
 
-A_node A_extractDeclist(MultiTree* declist);
+void A_Dec(A_node* dec_a, MultiTree* dec_b);
 
-void a_exp(A_node* exp_a, MultiTree* exp_b);
+void A_Exp(A_node* exp_a, MultiTree* exp_b);
 
-void A_string(A_node* string_a, char* string_b);
+void A_String(A_node* string_a, char* string_b);
 
-void A_floatNum(A_node* floatNum_a, MultiTree* floatNum_b);
+void A_FloatNum(A_node* floatNum_a, MultiTree* floatNum_b);
 
-A_node A_extractArgs(MultiTree* args);
+A_node A_ExtractArgs(MultiTree* args);
 
 
 /**/
