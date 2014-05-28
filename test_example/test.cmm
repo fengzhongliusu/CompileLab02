@@ -1,0 +1,16 @@
+int main()
+{
+	int a,b,c;
+	a = 10;
+	b = 5;
+	a = a + b;
+
+	if(b > 0)
+	{
+		int a = c * 2;
+		int a = 1;
+		b = b -a ;		
+	}
+
+	return b;
+}

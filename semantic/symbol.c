@@ -22,68 +22,70 @@
 #include <assert.h>
 #include "sem.h"
 
+extern HashList hash_table[HASH_SIZE];
+extern HashList structure_table[HASH_SIZE];
+
 
 //向哈系表添加元素	
-int add_hash(HashList* hash_head,HashList* hash_node)	
+int add_hash(HashList* hash_node)	
 {
 	int hash_no;
-	if(hash_node->var.name == NULL)	//结构体定义
+	if(hash_node->var.name == NULL){	//结构体定义
 		hash_no = hash_func(hash_node->var.type->u.structure->name);
+
+		if(structure_table[hash_no].list_type == -1)	//empty
+			memcpy(&structure_table[hash_no],hash_node,sizeof(HashList));
+		else{											// add to the head of the list
+			HashList* temp = &hash_heap[hash_heap_no++];
+			memcpy(temp,&structure_table[hash_no],sizeof(HashList));			
+			memcpy(&structure_table[hash_no],hash_node,sizeof(HashList));
+			structure_table[hash_no].next = temp;
+		}
+
+	}
 	else if(hash_node->list_type == 0){		//变量
 		hash_no = hash_func(hash_node->var.name);
-	}
-	else{								//函数
+	} else{								//函数
 		hash_no = hash_func(hash_node->func.name);
 	}
 
-	if(hash_head[hash_no].list_type == -1){    // 哈希槽为空
-		hash_head[hash_no] = *hash_node;
-		assert(hash_head[hash_no].next==NULL);
-	}
-	else{
-		if(hash_cmp(&hash_head[hash_no],hash_node)==0){   //已存在相同名称变量或函数
-			return -1;
-		}
-		else{											//open hashing,哈希值相同的插入链出链表
-			HashList* temp = (HashList*)malloc(sizeof(HashList));
-			*temp = *hash_node;
-			hash_head[hash_no].next = temp;
-			assert(hash_head[hash_no].next!=NULL);
-		}
+	if(hash_table[hash_no].list_type == -1){  //empty
+		memcpy(&hash_table[hash_no],hash_node,sizeof(HashList));
+		assert(hash_table[hash_no].next==NULL);
+
+	} else{ // add to the head the list
+
+		HashList* temp = &hash_heap[hash_heap_no++];
+		memcpy(temp,&hash_table[hash_no],sizeof(HashList));
+		memcpy(&hash_table[hash_no],hash_node,sizeof(hash_node));
+		hash_table[hash_no].next = temp;		
 	}
 	return 0;
 }
 
 
 //获取变量的类型
-VarList* get_varType(HashList* hash_head,char *node_name)		
+VarList* get_varType(char *node_name)		
 {
 	int hash_no;
 	HashList* temp;
-	
+
 	hash_no = hash_func(node_name);
 
-	if(hash_head[hash_no].list_type == -1){   //哈希槽为空
+	if(hash_table[hash_no].list_type == -1){   //哈希槽为空
 		return NULL;
 	}
 	else{
-		if(hash_head[hash_no].next == NULL && hash_head[hash_no].list_type == 0){  //槽内只有一个值
-			assert(&(hash_head[hash_no].var)!=NULL);
-			return &(hash_head[hash_no].var);
+		/*if(hash_table[hash_no].next == NULL && hash_table[hash_no].list_type == 0){  //槽内只有一个值
+		  assert(&(hash_table[hash_no].var)!=NULL);
+		  return &(hash_table[hash_no].var);
+		  }*/
+		//else{
+		for(temp = &hash_table[hash_no];temp!=NULL;temp = temp->next){
+			if(strcmp(temp->var.name,node_name)==0 && hash_table[hash_no].list_type == 0)
+				return &(temp->var);
 		}
-		else{
-			for(temp = &hash_head[hash_no];temp!=NULL;temp = temp->next){
-				if(temp->var.name == NULL){					
-					if(strcmp(temp->var.type->u.structure->name,node_name)==0){
-						return &(temp->var);
-					}
-				}
-				else{
-					if(strcmp(temp->var.name,node_name)==0 && hash_head[hash_no].list_type == 0)
-						return &(temp->var);
-				}
-			}
-		}
+		//}
 	}
 
 	return NULL;    //对应槽有值，但名称不是node_name
@@ -92,25 +94,25 @@ VarList* get_varType(HashList* hash_head,char *node_name)
 
 
 //获取函数的返回值类型以及参数类型
-FunList* get_funType(HashList* hash_head,char *node_name)  
+FunList* get_funType(char *node_name)  
 {
 	int hash_no;
 	HashList* temp;
 
 	hash_no = hash_func(node_name);
-	if(hash_head[hash_no].list_type == -1){
+	if(hash_table[hash_no].list_type == -1){
 		return NULL;
 	}
 	else{
-		if(hash_head[hash_no].next == NULL && hash_head[hash_no].list_type == 1){
-			return &(hash_head[hash_no].func);
+		//if(hash_table[hash_no].next == NULL && hash_table[hash_no].list_type == 1){
+		//return &(hash_table[hash_no].func);
+		//}
+		//else{			
+		for(temp = &hash_table[hash_no];temp!=NULL;temp = temp->next){
+			if(strcmp(temp->func.name,node_name)==0 && hash_table[hash_no].list_type == 1)
+				return &(temp->func);
 		}
-		else{			
-			for(temp = &hash_head[hash_no];temp!=NULL;temp = temp->next){
-				if(strcmp(temp->func.name,node_name)==0 && hash_head[hash_no].list_type == 1)
-					return &(temp->func);
-			}
-		}
+		//}
 	}
 	return NULL;   //对应槽有值，但名称不是node_name;
 }
@@ -246,7 +248,7 @@ int typecmp(Type* type1, Type* type2)
 	if(type1->kind == BASIC)
 	{
 		if(type1->u.basic != type2->u.basic)
-		return -1;
+			return -1;
 		else
 			return 0;
 	}
@@ -265,5 +267,48 @@ int typecmp(Type* type1, Type* type2)
 			return 0;
 	}
 }
-		
+
+
+/**
+ * return value: -1 for duplication, 0 for no
+ **/
+int cmp_local(HashList* head,HashList* node)
+{
+	HashList *temp = head;
+	if(head == NULL)
+		return 0;
+	while(temp != NULL)
+	{
+		if(temp->list_type == 0)  //var
+			if(node->list_type == 0 && strcmp(temp->var.name,node->var.name)==0)
+				return -1;
+			else			//func
+				if(node->list_type == 1 && strcmp(temp->func.name,node->func.name)==0)
+					return -1;
+		temp = temp->block_next;
+	}
+	return 0;
+}
+
+
+/**
+ * remove var of block in the table
+ * now only defination in "{}" will be remove 
+ * */
+
+void remove_var(HashList* head)
+{
+	int hash_no;
+	HashList* temp = head;
+	while(temp != NULL)
+	{
+		hash_no = hash_func(temp->var.name);		
+		assert(hash_table[hash_no].list_type != -1);
+		assert(temp->depth == hash_table[hash_no].depth);
+		memcpy(&hash_table[hash_no],hash_table[hash_no].next,sizeof(HashList));
+		temp = temp->next;
+	}
+}
+
+
 
