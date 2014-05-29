@@ -52,6 +52,8 @@ float main(float a,int b,float c)
 	q.a = 1;
 	struct_s.f = 2;
 	if(fff == 1) {
+		int i;
+		int i = 0;
 		aa;
 	}
 	else {

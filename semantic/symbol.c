@@ -24,8 +24,6 @@
 
 extern HashList hash_table[HASH_SIZE];
 extern HashList structure_table[HASH_SIZE];
-
-
 //向哈系表添加元素	
 int add_hash(HashList* hash_node)	
 {
@@ -47,7 +45,7 @@ int add_hash(HashList* hash_node)
 
 		HashList* temp = &hash_heap[hash_heap_no++];
 		memcpy(temp,&hash_table[hash_no],sizeof(HashList));
-		memcpy(&hash_table[hash_no],hash_node,sizeof(hash_node));
+		memcpy(&hash_table[hash_no],hash_node,sizeof(HashList));
 		hash_table[hash_no].next = temp;		
 	}
 	return 0;
@@ -73,16 +71,11 @@ VarList* get_varType(char *node_name)
 		//else{
 		for(temp = &hash_table[hash_no];temp!=NULL;temp = temp->next){
 			//if(strcmp(temp->var.name,node_name)==0 && hash_table[hash_no].list_type == 0)
-			if(temp->list_type == 0){
-				if(temp->var.name != NULL)
+			if(temp->list_type == 0 && temp->var.name != NULL){
 					if(strcmp(temp->var.name,node_name)==0)
 						return &(temp->var);
-				else
-					if(strcmp(temp->var.type->u.structure->name,node_name)==0)
-						return &(temp->var);
-			}
+			} 
 		}
-		//}
 	}
 
 	return NULL;    //对应槽有值，但名称不是node_name
