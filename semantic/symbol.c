@@ -32,16 +32,6 @@ int add_hash(HashList* hash_node)
 	int hash_no;
 	if(hash_node->var.name == NULL){	//结构体定义
 		hash_no = hash_func(hash_node->var.type->u.structure->name);
-
-		if(structure_table[hash_no].list_type == -1)	//empty
-			memcpy(&structure_table[hash_no],hash_node,sizeof(HashList));
-		else{											// add to the head of the list
-			HashList* temp = &hash_heap[hash_heap_no++];
-			memcpy(temp,&structure_table[hash_no],sizeof(HashList));			
-			memcpy(&structure_table[hash_no],hash_node,sizeof(HashList));
-			structure_table[hash_no].next = temp;
-		}
-
 	}
 	else if(hash_node->list_type == 0){		//变量
 		hash_no = hash_func(hash_node->var.name);
@@ -82,8 +72,15 @@ VarList* get_varType(char *node_name)
 		  }*/
 		//else{
 		for(temp = &hash_table[hash_no];temp!=NULL;temp = temp->next){
-			if(strcmp(temp->var.name,node_name)==0 && hash_table[hash_no].list_type == 0)
-				return &(temp->var);
+			//if(strcmp(temp->var.name,node_name)==0 && hash_table[hash_no].list_type == 0)
+			if(temp->list_type == 0){
+				if(temp->var.name != NULL)
+					if(strcmp(temp->var.name,node_name)==0)
+						return &(temp->var);
+				else
+					if(strcmp(temp->var.type->u.structure->name,node_name)==0)
+						return &(temp->var);
+			}
 		}
 		//}
 	}
@@ -279,12 +276,16 @@ int cmp_local(HashList* head,HashList* node)
 		return 0;
 	while(temp != NULL)
 	{
-		if(temp->list_type == 0)  //var
-			if(node->list_type == 0 && strcmp(temp->var.name,node->var.name)==0)
-				return -1;
-			else			//func
-				if(node->list_type == 1 && strcmp(temp->func.name,node->func.name)==0)
+		if(node->list_type == 0){
+			if(temp->list_type == 0 && temp->var.name != NULL){   //structure
+				if(strcmp(temp->var.name,node->var.name)==0)
 					return -1;
+			}
+		}
+		else if(node->list_type == 1){
+			if(temp->list_type == 1 && strcmp(temp->func.name,node->func.name) == 0)				
+				return -1;
+		}
 		temp = temp->block_next;
 	}
 	return 0;

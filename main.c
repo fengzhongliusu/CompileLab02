@@ -49,8 +49,6 @@ int main(int argc,char** argv)
 	for(i=0;i<HASH_SIZE;i++){
 		hash_table[i].list_type = -1;
 		hash_table[i].depth = 0;
-		structure_table[i].list_type = -1;		
-		structure_table[i].depth = 0;
 	}
 
 	for(i=0; i<MAX_SYMBOL; i++){

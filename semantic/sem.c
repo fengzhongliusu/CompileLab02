@@ -96,6 +96,7 @@ void parse_extdef(Type* type,MultiTree* root)
 			}
 			else{
 				//add to the block var list
+				printf("%d %s\n",block_no,hash_node->var.type->u.structure->name);
 				hash_node->block_next = symbol_head[block_no].block_next;
 				symbol_head[block_no].block_next = hash_node;
 
@@ -167,6 +168,7 @@ void walk_vardec(Type* type,MultiTree* root)
 			print_err(3,root->child[0]->lineno,hash_node->var.name);			
 		else{
 			//add to the block list
+			printf("%d %s\n",block_no,hash_node->var.name);			
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;
 
@@ -409,6 +411,7 @@ void parse_fundec(FunList* funlist,MultiTree* root)
 			redef_sign = 1;
 		} else{
 			//add to the block list 
+			printf("%d %s\n",block_no,root->child[0]->val.id);
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;			
 
@@ -451,6 +454,7 @@ void walk_varlist(FunList* funlist,MultiTree* root)		//TODO:test-同时两个函
 			redef_sign = 1;
 		} else {
 			//add to the block list
+			printf("%d %s\n",block_no,hash_node->func.name);
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;
 
@@ -493,7 +497,7 @@ void walk_param(FunList* funlist,int arc_num,MultiTree* root)
 		//TODO
 		funlist->arc_type[arc_num].kind = STRUCTURE;
 		VarList *var;
-		if((var = get_varType(root->child[0]->child[0]->child[1]->child[0]->val.id)) == NULL)
+		if((var = get_varType(root->child[0]->child[0]->child[1]->child[0]->val.id)) == NULL)			
 			print_err(1, spe_node->child[0]->lineno, root->child[0]->child[0]->child[1]->child[0]->val.id);
 		else
 		{
@@ -649,6 +653,7 @@ void parse_compst(MultiTree* parent, MultiTree* root)
 	memset(&symbol_head[block_no],0,sizeof(HashList));
 	symbol_head[block_no].block_next = NULL;
 	block_no--;
+	printf("back to symbol table%d \n",block_no);
 }	
 
 
@@ -847,7 +852,7 @@ void walk_arg(char* func_name,int arc_num,Type* arc_type,MultiTree* root, char *
 
 Type* get_structvar(Type* type, char* id)
 {
-	//从符号表取结构体类型
+	//从符号表取结构体类型	
 	VarList	*var_in_table = get_varType(type->u.structure->name);
 	Type* type_in_var = var_in_table->type;
 

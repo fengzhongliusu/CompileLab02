@@ -134,7 +134,6 @@ void walk_vardec(Type* ,MultiTree* );
 void hash_display(HashList* );
 
 HashList hash_table[HASH_SIZE];
-HashList structure_table[HASH_SIZE];
 HashList symbol_head[MAX_SYMBOL];
 
 int block_no;

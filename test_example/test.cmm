@@ -8,7 +8,12 @@ int main()
 	if(b > 0)
 	{
 		int a = c * 2;
-		int a = 1;
+		if(a == 1)
+		{
+			int a;
+			int a = 1;
+			a = 0;
+		}
 		b = b -a ;		
 	}
 

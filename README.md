@@ -5,4 +5,6 @@ CompileLab02
 /*TODO*/
 add strcuture name to structue_table;
 
+symbol.c:75
+
 
