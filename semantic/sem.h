@@ -191,6 +191,7 @@ void walk_structvar(Type *, Type *, MultiTree *);
 void structtype_add(Type *, Type *, MultiTree *);
 
 Type* get_structvar(Type*,char*);   //type of variable in a structure
+VarList* get_struct_var(char* name);
 
 
 int hash_heap_no;

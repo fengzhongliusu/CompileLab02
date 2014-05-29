@@ -86,12 +86,10 @@ int main(int argc,char** argv)
 		//printf("a find!!!\n");
 	}
 
-	VarList* var1 = get_varType("struct_s");
+	VarList* var1 = get_struct_var("s");
 	if(var1!=NULL){
-		node.list_type = 0;
-		node.var = *var1;
-	}
-*/
+		printf("not added!!\n");
+	}*/
 
 	
 	hash_heap_no = 0;

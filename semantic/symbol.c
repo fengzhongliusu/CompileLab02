@@ -115,6 +115,24 @@ FunList* get_funType(char *node_name)
 }
 
 
+VarList* get_struct_var(char* name)
+{
+	int hash_no;
+	HashList* temp;
+	hash_no = hash_func(name);
+	if(hash_table[hash_no].list_type == -1)
+		return NULL;
+	else{
+		for(temp=&hash_table[hash_no];temp != NULL; temp = temp->next){
+			if(temp->list_type == 0 && temp->var.name == NULL){
+				if(strcmp(name,temp->var.type->u.structure->name)==0)
+					return &(temp->var);
+			}
+		}
+	}
+	return NULL;
+}
+
 //比较哈希表元素是否相同(比较名字)
 int hash_cmp(HashList* a,HashList* b)
 {
@@ -286,6 +304,24 @@ int cmp_local(HashList* head,HashList* node)
 			if(temp->list_type == 1 && strcmp(temp->func.name,node->func.name) == 0)				
 				return -1;
 		}
+		temp = temp->block_next;
+	}
+	return 0;
+}
+
+int cmp_struct(HashList* head,HashList* node)
+{
+	assert(node->list_type == 0);
+	assert(node->var.name == NULL);
+
+	HashList *temp = head;
+	if(head == NULL)
+		return 0;
+	while(temp != NULL)
+	{
+		if(temp->list_type == 0 && temp->var.name == NULL)
+			if(strcmp(temp->var.type->u.structure->name,node->var.type->u.structure->name)==0)
+				return -1;
 		temp = temp->block_next;
 	}
 	return 0;
