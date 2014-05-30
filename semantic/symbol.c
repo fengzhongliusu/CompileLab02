@@ -321,24 +321,3 @@ int cmp_struct(HashList* head,HashList* node)
 }
 
 
-/**
- * remove var of block in the table
- * now only defination in "{}" will be remove 
- * */
-
-void remove_var(HashList* head)
-{
-	int hash_no;
-	HashList* temp = head;
-	while(temp != NULL)
-	{
-		hash_no = hash_func(temp->var.name);		
-		assert(hash_table[hash_no].list_type != -1);
-		assert(temp->depth == hash_table[hash_no].depth);
-		memcpy(&hash_table[hash_no],hash_table[hash_no].next,sizeof(HashList));
-		temp = temp->next;
-	}
-}
-
-
-

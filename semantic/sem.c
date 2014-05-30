@@ -96,7 +96,7 @@ void parse_extdef(Type* type,MultiTree* root)
 			}
 			else{
 				//add to the block var list
-				printf("%d %s\n",block_no,hash_node->var.type->u.structure->name);
+				//printf("%d %s\n",block_no,hash_node->var.type->u.structure->name);
 				hash_node->block_next = symbol_head[block_no].block_next;
 				symbol_head[block_no].block_next = hash_node;
 
@@ -169,7 +169,7 @@ void walk_vardec(Type* type,MultiTree* root)
 			print_err(3,root->child[0]->lineno,hash_node->var.name);			
 		else{
 			//add to the block list
-			printf("%d %s\n",block_no,hash_node->var.name);			
+			//printf("%d %s\n",block_no,hash_node->var.name);			
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;
 
@@ -412,7 +412,7 @@ void parse_fundec(FunList* funlist,MultiTree* root)
 			redef_sign = 1;
 		} else{
 			//add to the block list 
-			printf("%d %s\n",block_no,root->child[0]->val.id);
+			//printf("%d %s\n",block_no,root->child[0]->val.id);
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;			
 
@@ -457,7 +457,7 @@ void walk_varlist(FunList* funlist,MultiTree* root)		//TODO:test-同时两个函
 			redef_sign = 1;
 		} else {
 			//add to the block list
-			printf("%d %s\n",block_no,hash_node->func.name);
+			//printf("%d %s\n",block_no,hash_node->func.name);
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;
 
@@ -545,7 +545,7 @@ void walk_funcvar(Type* type,MultiTree* root)
 			print_err(3,root->child[0]->lineno,hash_node->var.name);			
 		else{
 			//add to the block list
-			printf("%d %s\n",block_no,hash_node->var.name);			
+			//printf("%d %s\n",block_no,hash_node->var.name);			
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;
 

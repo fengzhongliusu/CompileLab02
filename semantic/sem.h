@@ -140,7 +140,6 @@ int block_no;
 int glb_depth;
 
 int cmp_local(HashList*,HashList*); //local defination redefined 
-void remove_var(HashList*);
 
 /***********局部变量的定义***************************/
 

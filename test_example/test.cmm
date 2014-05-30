@@ -5,9 +5,16 @@ struct stu{
 
 int cmp(int e,int f)
 {
-	int f;
+	float f;
+	float d;
 	int m;
+	d = e + 1;
 	e = 0;
+	if(e==0)
+	{
+		int e;
+		e = e +1;
+	}
 	m = f+1;
 	return m;
 }
