@@ -110,4 +110,32 @@ int get_childnum(MultiTree* node)
 	return i;
 }
 
+A_stack create_stack()
+{
+	A_stack stack;
+	stack = (A_stack)malloc(sizeof(*stack));
+	stack->bottom = (int*)malloc(100 * sizeof(int));
+	stack->top = stack->bottom - 1;
+	stack->volume = 100;
+	return stack;
+}
 
+int* pop(A_stack stack)
+{
+	if(stack->top == stack->bottom - 1)
+		return NULL;
+	else
+	{
+		stack->top--; return stack->top + 1;
+	}
+}
+
+int push(A_stack stack, int a)
+{
+	if(stack->top == stack->bottom + stack->volume)
+		return 0;
+	else
+	{
+		stack->top++; *(stack->top) = a; return 1;
+	}
+}

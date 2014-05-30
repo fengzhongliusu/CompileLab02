@@ -54,10 +54,10 @@ int main(int argc,char** argv)
 		exit(1);
 	}
 
-	walk_tree(root);
+	//walk_tree(root);
 	pg = A_Build(root);
-	A_print(pg);
-	sem_analy(root);
+	A_printTree(pg);
+	//sem_analy(root);
 
 	FunList* fun = get_funType(hash_table,"main");
 	HashList node;

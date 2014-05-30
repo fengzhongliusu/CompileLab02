@@ -22,6 +22,16 @@
 #include <string.h>
 #include <assert.h>
 
+typedef struct A_stack_* A_stack;
+struct A_stack_
+{
+	int* bottom;
+	int* top;
+	int volume;
+};
+
+
+
 union value {
 	int intNum;
 	float floatNum;
@@ -53,7 +63,9 @@ typedef struct A_node_* A_node;
 
 struct A_node_
 {
-	enum {A_intNum, A_floatNum, A_id, A_type, A_nonLeaf, A_string, A_param, A_exp, A_struct, A_dim} kind;
+	enum {A_intNum, A_floatNum, A_id, A_type, A_nonLeaf, A_string, A_param, A_exp, A_struct, A_dim, A_defineFunction,
+		A_defineVar, A_defineStruct, A_function, A_parameter, A_def, A_dec, A_expStmt, A_ifStmt, A_ifElseStmt, A_whileStmt,
+	   	A_returnStmt, A_compSt} kind;
 	union {struct {int value; int lineno;} int_leaf;
 		   struct {float value; int lineno;} float_leaf;
 		   struct {char* id; int lineno;} id_leaf;
@@ -63,6 +75,9 @@ struct A_node_
 	} u;
 };
 
+void A_printTree(A_node root);
+
+void A_print(A_node root);
 
 A_node A_Build(MultiTree* root);
 
@@ -113,5 +128,8 @@ void A_FloatNum(A_node* floatNum_a, MultiTree* floatNum_b);
 A_node A_ExtractArgs(MultiTree* args);
 
 
+A_stack create_stack();
+int* pop(A_stack);
+int push(A_stack, int);
 /**/
 #endif
