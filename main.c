@@ -42,9 +42,19 @@ int main(int argc,char** argv)
 
 	hash_heap_no = 0;
 	type_heap_no = 0;
+	block_no = 0;
+	glb_depth = 0;
+
 	int i;
 	for(i=0;i<HASH_SIZE;i++){
 		hash_table[i].list_type = -1;
+		hash_table[i].depth = 0;
+	}
+
+	for(i=0; i<MAX_SYMBOL; i++){
+		symbol_head[i].list_type = -1;
+		symbol_head[i].next = NULL;
+		symbol_head[i].block_next = NULL;
 	}
 
 	yyrestart(f);
@@ -58,8 +68,10 @@ int main(int argc,char** argv)
 	pg = A_Build(root);
 	A_printTree(pg);
 	//sem_analy(root);
+	sem_analy(root);
+	printf("\n");
 
-	FunList* fun = get_funType(hash_table,"main");
+	/*FunList* fun = get_funType("main");
 	HashList node;
 	node.list_type = 1;
 	if(fun!=NULL){
@@ -68,17 +80,15 @@ int main(int argc,char** argv)
 		//hash_display(&node);
 	}
 
-	VarList* var = get_varType(hash_table,"a");
+	VarList* var = get_varType("a");
 	if(var!=NULL){
 		//printf("a find!!!\n");
 	}
 
-	VarList* var1 = get_varType(hash_table,"struct_s");
+	VarList* var1 = get_struct_var("s");
 	if(var1!=NULL){
-		node.list_type = 0;
-		node.var = *var1;
-	}
-
+		printf("not added!!\n");
+	}*/
 
 	
 	hash_heap_no = 0;

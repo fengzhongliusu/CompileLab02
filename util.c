@@ -79,7 +79,6 @@ void walk_tree(MultiTree* root)
 		k += 2;
 		if(root->op == NULL){			
 			for(i=0;root->child[i] != NULL;i++){
-		//		printf("!!!!%s\n",root->child[i]->node_name);
 				walk_tree(root->child[i]);
 			}
 		}

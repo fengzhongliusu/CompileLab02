@@ -31,6 +31,7 @@ typedef struct FieldList_ FieldList;
 #define HASH_SIZE 0x4000
 #define MAX_NODE 100
 #define MAX_TYPE 1024
+#define MAX_SYMBOL 128
 
 /**
  * 结构体类型*/
@@ -85,19 +86,21 @@ struct hash_list{
 		VarList var;
 		FunList func;
 	};
+	int depth;
 	HashList* next;
+	HashList* block_next;
 };
 
 
 
 //向哈系表添加元素
-int add_hash(HashList*,HashList*);	
+int add_hash(HashList*);	
 
 //获取变量的类型
-VarList* get_varType(HashList*,char *);		
+VarList* get_varType(char *);		
 
 //获取函数的返回值类型以及参数类型
-FunList* get_funType(HashList*,char*);  
+FunList* get_funType(char*);  
 
 //比较type是否相同
 int typecmp(Type *, Type *);
@@ -131,6 +134,12 @@ void walk_vardec(Type* ,MultiTree* );
 void hash_display(HashList* );
 
 HashList hash_table[HASH_SIZE];
+HashList symbol_head[MAX_SYMBOL];
+
+int block_no;
+int glb_depth;
+
+int cmp_local(HashList*,HashList*); //local defination redefined 
 
 /***********局部变量的定义***************************/
 
@@ -144,7 +153,7 @@ void parse_exp(Type* , MultiTree* );
 
 void walk_arg(char*,int,Type*,MultiTree*, char *);
 
-void parse_compst(MultiTree* , MultiTree* );
+void parse_compst(MultiTree* , MultiTree*,int);
 
 void walk_deflist(MultiTree* );
 
@@ -181,6 +190,7 @@ void walk_structvar(Type *, Type *, MultiTree *);
 void structtype_add(Type *, Type *, MultiTree *);
 
 Type* get_structvar(Type*,char*);   //type of variable in a structure
+VarList* get_struct_var(char* name);
 
 
 int hash_heap_no;
