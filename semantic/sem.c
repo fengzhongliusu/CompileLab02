@@ -96,7 +96,7 @@ void parse_extdef(Type* type,MultiTree* root)
 			}
 			else{
 				//add to the block var list
-				//printf("%d %s\n",block_no,hash_node->var.type->u.structure->name);
+				printf("%d %s\n",block_no,hash_node->var.type->u.structure->name);
 				hash_node->block_next = symbol_head[block_no].block_next;
 				symbol_head[block_no].block_next = hash_node;
 
@@ -119,13 +119,14 @@ void parse_extdef(Type* type,MultiTree* root)
 	}
 
 	else if(strcmp(root->child[1]->node_name,"FunDec")==0)
-	{		
+	{	
+		block_no++;
 		FunList* funlist = (FunList*)malloc(sizeof(FunList));
 		funlist->re_type = &type_heap[type_heap_no++];
 		memcpy(funlist->re_type, type, sizeof(Type));
 		parse_fundec(funlist,root->child[1]);
 		if(redef_sign == 0){
-			parse_compst(root,root->child[2]);
+			parse_compst(root,root->child[2],1);
 		}
 		redef_sign = 0;
 	}
@@ -168,7 +169,7 @@ void walk_vardec(Type* type,MultiTree* root)
 			print_err(3,root->child[0]->lineno,hash_node->var.name);			
 		else{
 			//add to the block list
-			//printf("%d %s\n",block_no,hash_node->var.name);			
+			printf("%d %s\n",block_no,hash_node->var.name);			
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;
 
@@ -405,18 +406,19 @@ void parse_fundec(FunList* funlist,MultiTree* root)
 		free(funlist);					/***TODO:test****/
 		hash_node->next = NULL;
 		hash_node->block_next = NULL;
-
+		block_no--;
 		if(cmp_local(symbol_head[block_no].block_next,hash_node)== -1){ //加入符号表,可能重定义
 			print_err(4, root->child[0]->lineno, root->child[0]->val.id);
 			redef_sign = 1;
 		} else{
 			//add to the block list 
-			//printf("%d %s\n",block_no,root->child[0]->val.id);
+			printf("%d %s\n",block_no,root->child[0]->val.id);
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;			
 
 			//add to the hash table
 			add_hash(hash_node);
+			block_no++;
 		}
 	}
 	else					//有参数
@@ -449,17 +451,19 @@ void walk_varlist(FunList* funlist,MultiTree* root)		//TODO:test-同时两个函
 		hash_node->next = NULL;		
 		hash_node->block_next = NULL;
 
+		block_no--;
 		if(cmp_local(symbol_head[block_no].block_next,hash_node)== -1){//加入符号表,可能重定义
 			print_err(4, root->child[0]->lineno, hash_node->func.name);
 			redef_sign = 1;
 		} else {
 			//add to the block list
-			////printf("%d %s\n",block_no,hash_node->func.name);
+			printf("%d %s\n",block_no,hash_node->func.name);
 			hash_node->block_next = symbol_head[block_no].block_next;
 			symbol_head[block_no].block_next = hash_node;
 
 			//addd to the hash table
 			add_hash(hash_node);		
+			block_no++;
 		}
 
 	}
@@ -528,6 +532,26 @@ void walk_funcvar(Type* type,MultiTree* root)
 			type->u.array.elem = embed_type;
 			walk_funcvar(type,root->child[0]);
 		}
+	} else{
+		HashList *hash_node = &hash_heap[hash_heap_no++];
+		hash_node->list_type = 0;
+		hash_node->var.name = root->child[0]->val.id;
+		hash_node->var.type = &type_heap[type_heap_no++];
+		memcpy(hash_node->var.type, type, sizeof(Type));
+		hash_node->next = NULL;
+		hash_node->block_next = NULL;
+
+		if(cmp_local(symbol_head[block_no].block_next,hash_node) == -1)
+			print_err(3,root->child[0]->lineno,hash_node->var.name);			
+		else{
+			//add to the block list
+			printf("%d %s\n",block_no,hash_node->var.name);			
+			hash_node->block_next = symbol_head[block_no].block_next;
+			symbol_head[block_no].block_next = hash_node;
+
+			//add to the hash_table
+			add_hash(hash_node);
+		}
 	}
 }
 
@@ -584,7 +608,7 @@ void walk_stmt(MultiTree* root)
 	if(memcmp(root->child[0]->node_name, "Exp", 3) == 0)
 		parse_exp(type, root->child[0]);
 	else if(memcmp(root->child[0]->node_name, "CompSt", 6) == 0)
-		parse_compst(root, root->child[0]);
+		parse_compst(root, root->child[0],0);
 	else if(memcmp(root->child[0]->node_name, "RETURN", 6) == 0)
 	{
 		parse_exp(type, root->child[1]);
@@ -625,9 +649,10 @@ void walk_stmt(MultiTree* root)
 /**
  *处理函数体
  */
-void parse_compst(MultiTree* parent, MultiTree* root)
+void parse_compst(MultiTree* parent, MultiTree* root,int func_sign)
 {
-	block_no++;
+	if(func_sign ==  0) // not compst of func
+		block_no++;
 	assert(root != NULL);
 	assert(get_childnum(root) >= 2);
 
@@ -651,7 +676,7 @@ void parse_compst(MultiTree* parent, MultiTree* root)
 			print_err(17, root->child[1]->lineno, nearest_func);		// 没有返回值
 		return_flag = 0;
 	}
-	
+
 	memset(&symbol_head[block_no],0,sizeof(HashList));
 	symbol_head[block_no].block_next = NULL;
 	block_no--;

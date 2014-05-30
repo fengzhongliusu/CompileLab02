@@ -154,7 +154,7 @@ void parse_exp(Type* , MultiTree* );
 
 void walk_arg(char*,int,Type*,MultiTree*, char *);
 
-void parse_compst(MultiTree* , MultiTree* );
+void parse_compst(MultiTree* , MultiTree*,int);
 
 void walk_deflist(MultiTree* );
 
