@@ -86,7 +86,6 @@ struct hash_list{
 		VarList var;
 		FunList func;
 	};
-	int depth;
 	HashList* next;
 	HashList* block_next;
 };
@@ -137,9 +136,9 @@ HashList hash_table[HASH_SIZE];
 HashList symbol_head[MAX_SYMBOL];
 
 int block_no;
-int glb_depth;
 
 int cmp_local(HashList*,HashList*); //local defination redefined 
+void remove_var(HashList*);
 
 /***********局部变量的定义***************************/
 

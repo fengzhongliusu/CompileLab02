@@ -1,29 +1,24 @@
 struct stu{
 	int a;
-	int b;
 };
 
 int cmp(int e,int f)
 {
 	float f;
-	float d;
 	int m;
-	d = e + 1;
 	e = 0;
 	if(e==0)
 	{
 		int e;
 		e = e +1;
 	}
-	m = f+1;
 	return m;
 }
 
-int main(int e,int d)
+int main(int d)
 {
 	int c;
-	c = 0;
+	e = 1;
 	d = d +1;
-
 	return d;
 }

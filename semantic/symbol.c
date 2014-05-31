@@ -320,4 +320,23 @@ int cmp_struct(HashList* head,HashList* node)
 	return 0;
 }
 
+/*remove the local defined variable*/
+void remove_var(HashList* head)
+{
+	assert(head != NULL);
+	int hash_no;
+	HashList* temp = head;	
+
+	while(temp != NULL){
+		assert(temp->var.name != NULL);
+		hash_no = hash_func(temp->var.name);
+		if(hash_table[hash_no].next == NULL){
+			memset(&hash_table[hash_no],0,sizeof(HashList));
+			hash_table[hash_no].list_type = -1;
+		} else {			
+			memcpy(&hash_table[hash_no],hash_table[hash_no].next,sizeof(HashList));
+		}			
+		temp = temp->block_next;
+	}
+}
 

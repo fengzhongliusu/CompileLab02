@@ -43,12 +43,10 @@ int main(int argc,char** argv)
 	hash_heap_no = 0;
 	type_heap_no = 0;
 	block_no = 0;
-	glb_depth = 0;
 
 	int i;
 	for(i=0;i<HASH_SIZE;i++){
 		hash_table[i].list_type = -1;
-		hash_table[i].depth = 0;
 	}
 
 	for(i=0; i<MAX_SYMBOL; i++){
@@ -68,6 +66,7 @@ int main(int argc,char** argv)
 	pg = A_Build(root);
 	A_printTree(pg);
 	//sem_analy(root);
+	printf("\n");
 	sem_analy(root);
 	printf("\n");
 
