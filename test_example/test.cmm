@@ -1,5 +1,6 @@
 struct stu{
 	int a;
+	int b;
 };
 
 int cmp(int e,int f)
@@ -12,13 +13,11 @@ int cmp(int e,int f)
 		int e;
 		e = e +1;
 	}
+	while(e==0){
+		int e;
+		e = e + 1;
+	}
 	return m;
 }
 
-int main(int d)
-{
-	int c;
-	e = 1;
-	d = d +1;
-	return d;
-}
+

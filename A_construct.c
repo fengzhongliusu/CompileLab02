@@ -67,7 +67,7 @@ void A_print(A_node root)
 	{
 		printf("\n");
 		A_PrintIndent(stack, indent);
-		printf("\033[34;1m%s %p\033[35;1m <%d>\033[0m ", root->u.non_leaf.id, root, root->u.non_leaf.lineno);
+		printf("\033[34;1m%s\033[35;1m <%d>\033[0m ", root->u.non_leaf.id,root->u.non_leaf.lineno);
 		if(root->u.non_leaf.op != NULL && memcmp(root->u.non_leaf.op, ".", 1) != 0)
 			printf("\033[31;1m'%s'\033[0m ", root->u.non_leaf.op);
 

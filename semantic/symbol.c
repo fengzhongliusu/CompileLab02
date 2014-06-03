@@ -323,7 +323,8 @@ int cmp_struct(HashList* head,HashList* node)
 /*remove the local defined variable*/
 void remove_var(HashList* head)
 {
-	assert(head != NULL);
+	if(head == NULL)
+		return;
 	int hash_no;
 	HashList* temp = head;	
 
