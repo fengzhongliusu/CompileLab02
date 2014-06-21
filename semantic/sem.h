@@ -66,6 +66,7 @@ struct Type_{
 struct var_list{
 	char* name;
 	Type* type;	
+	int sp;
 };
 
 /**

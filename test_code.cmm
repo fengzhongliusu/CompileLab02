@@ -1,0 +1,11 @@
+int main()
+{
+	int i, j, k, l;
+	i = 10;
+	j = i;
+	i = i + 5;
+	j = i * 10;
+	k = i - j;
+	l = k / i;
+	return i;
+}

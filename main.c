@@ -70,6 +70,14 @@ int main(int argc,char** argv)
 	sem_analy(root);
 	printf("\n");
 
+	VarList* var = get_varType("i");
+	if(var!=NULL){
+		printf("i find!!!\n");
+	}
+
+	M_init();
+	M_alloc(pg);
+
 	/*FunList* fun = get_funType("main");
 	HashList node;
 	node.list_type = 1;
@@ -77,14 +85,10 @@ int main(int argc,char** argv)
 		node.func = *fun;
 		node.next = NULL;
 		//hash_display(&node);
-	}
+	}*/
+	
 
-	VarList* var = get_varType("a");
-	if(var!=NULL){
-		//printf("a find!!!\n");
-	}
-
-	VarList* var1 = get_struct_var("s");
+	/*VarList* var1 = get_struct_var("s");
 	if(var1!=NULL){
 		printf("not added!!\n");
 	}*/

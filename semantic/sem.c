@@ -677,9 +677,9 @@ void parse_compst(MultiTree* parent, MultiTree* root,int func_sign)
 		return_flag = 0;
 	}
 
-	remove_var(symbol_head[block_no].block_next);   // remove the variable in this block
-	memset(&symbol_head[block_no],0,sizeof(HashList));
-	symbol_head[block_no].block_next = NULL;
+	//remove_var(symbol_head[block_no].block_next);   // remove the variable in this block
+	//memset(&symbol_head[block_no],0,sizeof(HashList));
+	//symbol_head[block_no].block_next = NULL;
 	block_no--;
 }	
 

@@ -20,7 +20,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <assert.h>
+#include <errno.h>
 
 typedef struct A_stack_* A_stack;
 struct A_stack_
@@ -68,7 +72,7 @@ struct A_node_
 	   	A_returnStmt, A_compSt} kind;
 	union {struct {int value; int lineno;} int_leaf;
 		   struct {float value; int lineno;} float_leaf;
-		   struct {char* id; int lineno;} id_leaf;
+		   struct {char* id; int lineno; int sp;} id_leaf;
 		   struct {char* op; int lineno; char* id; int child_num; A_node* child; A_node sibling;} non_leaf;
 		   struct {char* string;} string_leaf;
 		   struct {int value; A_node sibling;} dim;
@@ -132,4 +136,12 @@ A_stack create_stack();
 int* pop(A_stack);
 int push(A_stack, int);
 /**/
+
+
+void reg_dec(FILE*, A_node, A_node);
+void reg_exp(FILE*, A_node);
+
+void M_init();
+void M_alloc(A_node);
+
 #endif
